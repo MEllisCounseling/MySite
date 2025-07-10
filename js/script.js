@@ -8,15 +8,23 @@ function showLocation() {
 
 // Show consultation form modal
 function showConsultationForm() {
-    consultationModal.style.display = 'block';
+    const modal = consultationModal || document.getElementById('consultationModal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
 }
 
 // Hide consultation form modal
 function hideConsultationForm() {
-    consultationModal.style.display = 'none';
-    // Reset form
-    document.getElementById('consultationForm').reset();
-    document.getElementById('formMessage').textContent = '';
+    const modal = consultationModal || document.getElementById('consultationModal');
+    if (modal) {
+        modal.style.display = 'none';
+        // Reset form
+        const form = document.getElementById('consultationForm');
+        const message = document.getElementById('formMessage');
+        if (form) form.reset();
+        if (message) message.textContent = '';
+    }
 }
 
 // Event listeners will be set up in DOMContentLoaded
