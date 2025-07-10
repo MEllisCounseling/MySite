@@ -1,7 +1,5 @@
-// DOM Elements
-const modal = document.getElementById('locationModal');
-const consultationModal = document.getElementById('consultationModal');
-const closeBtn = document.querySelector('.close');
+// DOM Elements - will be initialized after DOM loads
+let modal, consultationModal, closeBtn;
 
 // Show location modal
 function showLocation() {
@@ -21,28 +19,7 @@ function hideConsultationForm() {
     document.getElementById('formMessage').textContent = '';
 }
 
-// Close modal when clicking the X
-closeBtn.addEventListener('click', function() {
-    modal.style.display = 'none';
-});
-
-// Close modal when clicking outside of it
-window.addEventListener('click', function(event) {
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-    if (event.target === consultationModal) {
-        hideConsultationForm();
-    }
-});
-
-// Smooth scrolling for learn more button
-document.querySelector('.hero-cta').addEventListener('click', function(e) {
-    e.preventDefault();
-    document.querySelector('.booking-section').scrollIntoView({
-        behavior: 'smooth'
-    });
-});
+// Event listeners will be set up in DOMContentLoaded
 
 // Handle consultation form submission
 async function submitConsultationForm(event) {
@@ -196,6 +173,39 @@ function showErrorMessage(message) {
 
 // Initialize page functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize DOM elements
+    modal = document.getElementById('locationModal');
+    consultationModal = document.getElementById('consultationModal');
+    closeBtn = document.querySelector('.close');
+    
+    // Set up event listeners
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+        if (event.target === consultationModal) {
+            hideConsultationForm();
+        }
+    });
+    
+    // Smooth scrolling for learn more button
+    const heroBtn = document.querySelector('.hero-cta');
+    if (heroBtn) {
+        heroBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.booking-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    }
+    
     // Add loading animation
     document.body.style.opacity = '0';
     setTimeout(() => {
