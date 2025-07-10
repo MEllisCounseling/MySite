@@ -1,4 +1,4 @@
-// Using built-in fetch (Node.js 18+) - remove node-fetch import
+// Using built-in fetch (Node.js 18+) - Updated for production deployment
 
 exports.handler = async (event, context) => {
     // Set CORS headers
