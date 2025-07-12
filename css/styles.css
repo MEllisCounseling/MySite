@@ -616,6 +616,13 @@ p {
     color: #ecf0f1;
 }
 
+.website-credit {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-style: italic;
+    margin-top: 10px !important;
+}
+
 /* Responsive Design */
 @media (max-width: 640px) {
     .hero-content {
@@ -870,6 +877,11 @@ p {
     
     /* Adjust hero section padding for mobile nav */
     .hero-section {
-        padding: 120px 0 60px 0;
+        padding: 140px 0 60px 0;
+    }
+    
+    .website-credit {
+        text-align: center;
+        margin-top: 15px !important;
     }
 }
