@@ -531,21 +531,6 @@ p {
     min-height: 100px;
 }
 
-.checkbox-label {
-    display: flex !important;
-    align-items: flex-start;
-    gap: 10px;
-    font-weight: normal !important;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.checkbox-label input[type="checkbox"] {
-    width: auto !important;
-    margin: 0;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
 
 .submit-button {
     width: 100%;
@@ -791,12 +776,16 @@ p {
     gap: 10px;
     cursor: pointer;
     line-height: 1.4;
+    font-weight: normal !important;
 }
 
 .checkbox-label input[type="checkbox"] {
     width: auto !important;
+    min-width: 16px;
+    height: 16px;
     margin: 3px 0 0 0;
     flex-shrink: 0;
+    cursor: pointer;
 }
 
 .consent-section {
@@ -877,5 +866,10 @@ p {
     
     .footer-contact {
         gap: 20px;
+    }
+    
+    /* Adjust hero section padding for mobile nav */
+    .hero-section {
+        padding: 120px 0 60px 0;
     }
 }

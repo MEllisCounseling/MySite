@@ -98,7 +98,7 @@ async function submitBookingForm(event) {
         email: formData.get('email'),
         
         // Consultation Information
-        appointmentType: formData.get('appointmentType'),
+        appointmentType: 'Free 20-Minute Consultation',
         preferredDate: formData.get('preferredDate'),
         preferredTime: formData.get('preferredTime'),
         sessionFormat: formData.get('sessionFormat'),
@@ -307,7 +307,8 @@ function initializeNavigation() {
             const targetSection = document.querySelector(targetId);
             
             if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 80; // Account for fixed nav height
+                const navHeight = window.innerWidth <= 768 ? 90 : 80; // More offset for mobile
+                const offsetTop = targetSection.offsetTop - navHeight;
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
@@ -346,10 +347,78 @@ function initializeNavigation() {
     updateActiveNavLink();
 }
 
+// Initialize date and time validation
+function initializeDateTimeValidation() {
+    const dateInput = document.getElementById('preferredDate');
+    const timeSelect = document.getElementById('preferredTime');
+    
+    if (dateInput) {
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+        
+        // Add event listener for date changes
+        dateInput.addEventListener('change', function() {
+            validateTimeOptions();
+        });
+    }
+    
+    function validateTimeOptions() {
+        if (!dateInput || !timeSelect) return;
+        
+        const selectedDate = new Date(dateInput.value);
+        const today = new Date();
+        const currentHour = today.getHours();
+        
+        // If selected date is today, disable past time slots
+        if (selectedDate.toDateString() === today.toDateString()) {
+            const timeOptions = timeSelect.querySelectorAll('option');
+            
+            timeOptions.forEach(option => {
+                if (option.value) {
+                    const timeString = option.value;
+                    const timeParts = timeString.match(/(\d+):(\d+)\s*(AM|PM)/);
+                    
+                    if (timeParts) {
+                        let hour = parseInt(timeParts[1]);
+                        const isPM = timeParts[3] === 'PM';
+                        
+                        // Convert to 24-hour format
+                        if (isPM && hour !== 12) hour += 12;
+                        if (!isPM && hour === 12) hour = 0;
+                        
+                        // Disable if time has passed (with 1-hour buffer)
+                        if (hour <= currentHour) {
+                            option.disabled = true;
+                            option.style.color = '#ccc';
+                        } else {
+                            option.disabled = false;
+                            option.style.color = '';
+                        }
+                    }
+                }
+            });
+        } else {
+            // Re-enable all options for future dates
+            const timeOptions = timeSelect.querySelectorAll('option');
+            timeOptions.forEach(option => {
+                option.disabled = false;
+                option.style.color = '';
+            });
+        }
+    }
+    
+    // Initial validation
+    validateTimeOptions();
+}
+
 // Initialize page functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize navigation
     initializeNavigation();
+    
+    // Initialize date/time validation
+    initializeDateTimeValidation();
     
     // Initialize DOM elements
     modal = document.getElementById('locationModal');
