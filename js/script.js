@@ -63,7 +63,7 @@ async function submitBookingForm(event) {
     
     // Disable submit button
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Scheduling...';
+    submitBtn.textContent = 'Submitting...';
     formMessage.textContent = '';
     formMessage.className = 'form-message';
     
@@ -71,24 +71,13 @@ async function submitBookingForm(event) {
     const formData = new FormData(form);
     
     // Validate required consent checkboxes
-    const requiredConsents = ['hipaaConsent', 'treatmentConsent', 'communicationConsent'];
+    const requiredConsents = ['consultationConsent', 'communicationConsent', 'privacyConsent'];
     for (const consent of requiredConsents) {
         if (!formData.get(consent)) {
             formMessage.className = 'form-message error';
-            formMessage.textContent = 'Please agree to all required consent forms.';
+            formMessage.textContent = 'Please agree to all consultation terms.';
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Schedule Appointment';
-            return;
-        }
-    }
-    
-    // Validate insurance fields if insurance is selected
-    if (formData.get('hasInsurance') === 'yes') {
-        if (!formData.get('insuranceProvider') || !formData.get('memberId')) {
-            formMessage.className = 'form-message error';
-            formMessage.textContent = 'Please complete all required insurance information.';
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Schedule Appointment';
+            submitBtn.textContent = 'Book Free Consultation';
             return;
         }
     }
@@ -100,7 +89,7 @@ async function submitBookingForm(event) {
         lastName: formData.get('lastName'),
         fullName: `${formData.get('firstName')} ${formData.get('lastName')}`,
         dateOfBirth: formData.get('dateOfBirth'),
-        gender: formData.get('gender'),
+        gender: formData.get('gender') || 'Not specified',
         address: formData.get('address'),
         city: formData.get('city'),
         state: formData.get('state'),
@@ -108,38 +97,23 @@ async function submitBookingForm(event) {
         phone: formData.get('phone'),
         email: formData.get('email'),
         
-        // Insurance Information
-        hasInsurance: formData.get('hasInsurance'),
-        insuranceProvider: formData.get('insuranceProvider') || 'N/A',
-        memberId: formData.get('memberId') || 'N/A',
-        groupNumber: formData.get('groupNumber') || 'N/A',
-        subscriberName: formData.get('subscriberName') || 'Same as patient',
-        
-        // Appointment Information
+        // Consultation Information
         appointmentType: formData.get('appointmentType'),
         preferredDate: formData.get('preferredDate'),
         preferredTime: formData.get('preferredTime'),
         sessionFormat: formData.get('sessionFormat'),
         
-        // Clinical Information
-        reasonForVisit: formData.get('reasonForVisit'),
-        previousTherapy: formData.get('previousTherapy') || 'Not specified',
-        currentMedications: formData.get('currentMedications') || 'Not specified',
+        // Interest Information
+        reasonForVisit: formData.get('reasonForVisit') || 'Not specified',
         additionalInfo: formData.get('additionalInfo') || 'None provided',
         
-        // Emergency Contact
-        emergencyContactName: formData.get('emergencyContactName'),
-        emergencyContactRelation: formData.get('emergencyContactRelation'),
-        emergencyContactPhone: formData.get('emergencyContactPhone'),
-        
         // Consent Information
-        hipaaConsent: formData.get('hipaaConsent') ? 'Yes' : 'No',
-        treatmentConsent: formData.get('treatmentConsent') ? 'Yes' : 'No',
+        consultationConsent: formData.get('consultationConsent') ? 'Yes' : 'No',
         communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
-        insuranceConsent: formData.get('insuranceConsent') ? 'Yes' : 'No',
+        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No',
         
         // Metadata
-        type: 'Direct Booking',
+        type: 'Free Consultation',
         submissionDate: new Date().toISOString(),
         status: 'Pending Confirmation'
     };
@@ -157,7 +131,7 @@ async function submitBookingForm(event) {
             const result = await response.json();
             console.log('Booking submission successful:', result);
             formMessage.className = 'form-message success';
-            formMessage.textContent = 'Appointment request submitted successfully! I will contact you within 24 hours to confirm your appointment details and verify insurance coverage.';
+            formMessage.textContent = 'Free consultation request submitted successfully! I will contact you within 24 hours to schedule your 20-minute consultation.';
             form.reset();
             
             // Hide modal after 5 seconds
@@ -171,7 +145,7 @@ async function submitBookingForm(event) {
             console.error('- Response:', errorData);
             
             formMessage.className = 'form-message error';
-            formMessage.textContent = `Error ${response.status}: ${errorData.details || 'Booking submission failed. Please try again.'}`;
+            formMessage.textContent = `Error ${response.status}: ${errorData.details || 'Consultation request failed. Please try again.'}`;
         }
     } catch (error) {
         console.error('=== BOOKING SUBMISSION ERROR ===');
@@ -180,11 +154,11 @@ async function submitBookingForm(event) {
         console.error('Full error:', error);
         
         formMessage.className = 'form-message error';
-        formMessage.textContent = 'There was an error submitting your booking request. Please try again or call us directly.';
+        formMessage.textContent = 'There was an error submitting your consultation request. Please try again or call us directly.';
     } finally {
         // Re-enable submit button
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Schedule Appointment';
+        submitBtn.textContent = 'Book Free Consultation';
     }
 }
 

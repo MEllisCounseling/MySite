@@ -44,9 +44,9 @@
                 </div>
                 
                 <div class="booking-option">
-                    <h3>Book Direct Appointment</h3>
-                    <p>Schedule directly with our HIPAA-compliant booking system. Handle your own insurance and keep more of your session fee in your pocket.</p>
-                    <button class="cta-button booking-cta" onclick="showConsultationForm()">Schedule Appointment</button>
+                    <h3>Free 20-Minute Consultation</h3>
+                    <p>Not sure if we're the right fit? Schedule a complimentary 20-minute consultation to meet Michael, discuss your goals, and see if his approach aligns with your needs—no commitment required.</p>
+                    <button class="cta-button booking-cta" onclick="showConsultationForm()">Book Free Consultation</button>
                 </div>
             </div>
         </div>
@@ -56,8 +56,8 @@
     <div id="consultationModal" class="modal">
         <div class="modal-content booking-modal">
             <span class="close" onclick="hideConsultationForm()">&times;</span>
-            <h3>Schedule Your Appointment</h3>
-            <p class="hipaa-notice">🔒 This form is HIPAA-compliant and your information is securely encrypted.</p>
+            <h3>Book Your Free 20-Minute Consultation</h3>
+            <p class="hipaa-notice">🔒 This form is securely encrypted. No insurance information needed for free consultations.</p>
             
             <form id="consultationForm" onsubmit="submitBookingForm(event)">
                 <!-- Personal Information Section -->
@@ -130,68 +130,19 @@
                     </div>
                 </div>
 
-                <!-- Insurance Information Section -->
-                <div class="form-section">
-                    <h4>Insurance Information</h4>
-                    
-                    <div class="form-group">
-                        <label for="hasInsurance">Do you have insurance? *</label>
-                        <select id="hasInsurance" name="hasInsurance" required onchange="toggleInsuranceFields()">
-                            <option value="">Please select</option>
-                            <option value="yes">Yes, I have insurance</option>
-                            <option value="no">No, I will pay out-of-pocket</option>
-                        </select>
-                    </div>
-                    
-                    <div id="insuranceFields" style="display: none;">
-                        <div class="form-group">
-                            <label for="insuranceProvider">Insurance Provider *</label>
-                            <select id="insuranceProvider" name="insuranceProvider">
-                                <option value="">Select your insurance</option>
-                                <option value="aetna">Aetna</option>
-                                <option value="anthem">Anthem</option>
-                                <option value="blue-cross">Blue Cross Blue Shield</option>
-                                <option value="cigna">Cigna</option>
-                                <option value="humana">Humana</option>
-                                <option value="kaiser">Kaiser Permanente</option>
-                                <option value="medicare">Medicare</option>
-                                <option value="medicaid">Medicaid</option>
-                                <option value="tricare">Tricare</option>
-                                <option value="united">United Healthcare</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="memberId">Member ID *</label>
-                                <input type="text" id="memberId" name="memberId">
-                            </div>
-                            <div class="form-group">
-                                <label for="groupNumber">Group Number</label>
-                                <input type="text" id="groupNumber" name="groupNumber">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="subscriberName">Subscriber Name (if different from patient)</label>
-                            <input type="text" id="subscriberName" name="subscriberName">
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Appointment Preferences Section -->
+                <!-- Consultation Preferences Section -->
                 <div class="form-section">
-                    <h4>Appointment Preferences</h4>
+                    <h4>Consultation Preferences</h4>
                     
                     <div class="form-group">
-                        <label for="appointmentType">Appointment Type *</label>
+                        <label for="appointmentType">Consultation Type *</label>
                         <select id="appointmentType" name="appointmentType" required>
-                            <option value="">Select appointment type</option>
-                            <option value="initial-consultation">Initial Consultation (90 minutes)</option>
-                            <option value="individual-therapy">Individual Therapy (50 minutes)</option>
-                            <option value="couples-therapy">Couples Therapy (80 minutes)</option>
-                            <option value="family-therapy">Family Therapy (80 minutes)</option>
+                            <option value="">Select consultation type</option>
+                            <option value="free-consultation">Free Consultation (20 minutes)</option>
+                            <option value="individual-interest">Interested in Individual Therapy</option>
+                            <option value="couples-interest">Interested in Couples Therapy</option>
+                            <option value="family-interest">Interested in Family Therapy</option>
                         </select>
                     </div>
                     
@@ -228,14 +179,14 @@
                     </div>
                 </div>
 
-                <!-- Clinical Information Section -->
+                <!-- What Brings You Here Section -->
                 <div class="form-section">
-                    <h4>Clinical Information</h4>
+                    <h4>What brings you to therapy?</h4>
                     
                     <div class="form-group">
-                        <label for="reasonForVisit">Primary reason for seeking therapy *</label>
-                        <select id="reasonForVisit" name="reasonForVisit" required>
-                            <option value="">Select primary concern</option>
+                        <label for="reasonForVisit">What would you like to discuss in our consultation?</label>
+                        <select id="reasonForVisit" name="reasonForVisit">
+                            <option value="">Select main area of interest</option>
                             <option value="anxiety">Anxiety</option>
                             <option value="depression">Depression</option>
                             <option value="relationship">Relationship Issues</option>
@@ -246,91 +197,45 @@
                             <option value="family">Family Issues</option>
                             <option value="work">Work/Career Issues</option>
                             <option value="self-esteem">Self-Esteem</option>
-                            <option value="addiction">Addiction/Substance Use</option>
+                            <option value="exploring">Just exploring therapy options</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="previousTherapy">Have you received therapy or counseling before?</label>
-                        <select id="previousTherapy" name="previousTherapy">
-                            <option value="">Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="currentMedications">Are you currently taking any psychiatric medications?</label>
-                        <select id="currentMedications" name="currentMedications">
-                            <option value="">Please select</option>
-                            <option value="yes">Yes</option>
-                            <option value="no">No</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="additionalInfo">Additional information you'd like to share (optional)</label>
-                        <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Any additional information that might help prepare for your session..."></textarea>
+                        <label for="additionalInfo">Anything specific you'd like to know about my approach? (optional)</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Questions about therapy approach, scheduling, insurance, etc..."></textarea>
                     </div>
                 </div>
 
-                <!-- Emergency Contact Section -->
-                <div class="form-section">
-                    <h4>Emergency Contact</h4>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="emergencyContactName">Emergency Contact Name *</label>
-                            <input type="text" id="emergencyContactName" name="emergencyContactName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="emergencyContactRelation">Relationship *</label>
-                            <input type="text" id="emergencyContactRelation" name="emergencyContactRelation" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="emergencyContactPhone">Emergency Contact Phone *</label>
-                        <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" required>
-                    </div>
-                </div>
-
-                <!-- Consent and HIPAA Section -->
+                <!-- Consent Section -->
                 <div class="form-section consent-section">
-                    <h4>Consent and Privacy</h4>
+                    <h4>Consultation Agreement</h4>
                     
                     <div class="form-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="hipaaConsent" name="hipaaConsent" required>
-                            I acknowledge that I have received and understand the Notice of Privacy Practices and consent to the use and disclosure of my protected health information for treatment, payment, and healthcare operations.
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="treatmentConsent" name="treatmentConsent" required>
-                            I consent to receive mental health treatment from Michael Ellis, LCSW at Winchester Therapy Services LLC.
+                            <input type="checkbox" id="consultationConsent" name="consultationConsent" required>
+                            I understand this is a free 20-minute consultation to explore therapy options and determine if Michael Ellis, LCSW is a good fit for my needs.
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label class="checkbox-label">
                             <input type="checkbox" id="communicationConsent" name="communicationConsent" required>
-                            I consent to communication via the contact methods provided above for appointment scheduling and treatment-related matters.
+                            I consent to being contacted via the methods provided above for consultation scheduling.
                         </label>
                     </div>
                     
                     <div class="form-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="insuranceConsent" name="insuranceConsent">
-                            I authorize Winchester Therapy Services LLC to bill my insurance company and release necessary information for billing purposes.
+                            <input type="checkbox" id="privacyConsent" name="privacyConsent" required>
+                            I understand that my information will be kept confidential and used only for scheduling this consultation.
                         </label>
                     </div>
                 </div>
                 
                 <button type="submit" class="cta-button submit-button" id="submitBtn">
-                    Schedule Appointment
+                    Book Free Consultation
                 </button>
                 
                 <div id="formMessage" class="form-message"></div>
