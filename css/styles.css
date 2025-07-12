@@ -452,10 +452,55 @@ p {
     background-color: #6b5b73;
     color: white;
     padding: 40px 0;
-    text-align: center;
 }
 
-.footer p {
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.contact-section h4 {
+    color: #e8f5e8;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.contact-section address {
+    font-style: normal;
+    line-height: 1.5;
+    color: #ecf0f1;
+}
+
+.contact-section p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.contact-section a {
+    color: #e8f5e8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-section a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.footer-info {
+    text-align: right;
+}
+
+.footer-info p {
     margin-bottom: 0.5rem;
     color: #ecf0f1;
 }
@@ -692,5 +737,19 @@ p {
     .form-section {
         padding: 15px;
         margin-bottom: 20px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+    
+    .footer-info {
+        text-align: center;
+    }
+    
+    .footer-contact {
+        gap: 20px;
     }
 }
