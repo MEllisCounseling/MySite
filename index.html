@@ -44,61 +44,293 @@
                 </div>
                 
                 <div class="booking-option">
-                    <h3>Book Direct Consultation</h3>
-                    <p>Submit your information directly and I'll contact you to schedule.</p>
-                    <button class="cta-button booking-cta" onclick="showConsultationForm()">Request Consultation</button>
+                    <h3>Book Direct Appointment</h3>
+                    <p>Schedule directly with our HIPAA-compliant booking system. Handle your own insurance and keep more of your session fee in your pocket.</p>
+                    <button class="cta-button booking-cta" onclick="showConsultationForm()">Schedule Appointment</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Consultation Form Modal -->
+    <!-- Booking Form Modal -->
     <div id="consultationModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content booking-modal">
             <span class="close" onclick="hideConsultationForm()">&times;</span>
-            <h3>Request a Consultation</h3>
-            <p>Please fill out the form below and I'll contact you within 24 hours to schedule your appointment.</p>
+            <h3>Schedule Your Appointment</h3>
+            <p class="hipaa-notice">🔒 This form is HIPAA-compliant and your information is securely encrypted.</p>
             
-            <form id="consultationForm" onsubmit="submitConsultationForm(event)">
-                <div class="form-group">
-                    <label for="name">Full Name *</label>
-                    <input type="text" id="name" name="name" required>
+            <form id="consultationForm" onsubmit="submitBookingForm(event)">
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h4>Personal Information</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth *</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender">
+                                <option value="">Prefer not to say</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="non-binary">Non-binary</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address *</label>
+                        <input type="text" id="address" name="address" placeholder="Street Address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State *</label>
+                            <select id="state" name="state" required>
+                                <option value="">Select State</option>
+                                <option value="VA">Virginia</option>
+                                <option value="MD">Maryland</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="DC">Washington DC</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code *</label>
+                            <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required>
+
+                <!-- Insurance Information Section -->
+                <div class="form-section">
+                    <h4>Insurance Information</h4>
+                    
+                    <div class="form-group">
+                        <label for="hasInsurance">Do you have insurance? *</label>
+                        <select id="hasInsurance" name="hasInsurance" required onchange="toggleInsuranceFields()">
+                            <option value="">Please select</option>
+                            <option value="yes">Yes, I have insurance</option>
+                            <option value="no">No, I will pay out-of-pocket</option>
+                        </select>
+                    </div>
+                    
+                    <div id="insuranceFields" style="display: none;">
+                        <div class="form-group">
+                            <label for="insuranceProvider">Insurance Provider *</label>
+                            <select id="insuranceProvider" name="insuranceProvider">
+                                <option value="">Select your insurance</option>
+                                <option value="aetna">Aetna</option>
+                                <option value="anthem">Anthem</option>
+                                <option value="blue-cross">Blue Cross Blue Shield</option>
+                                <option value="cigna">Cigna</option>
+                                <option value="humana">Humana</option>
+                                <option value="kaiser">Kaiser Permanente</option>
+                                <option value="medicare">Medicare</option>
+                                <option value="medicaid">Medicaid</option>
+                                <option value="tricare">Tricare</option>
+                                <option value="united">United Healthcare</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="memberId">Member ID *</label>
+                                <input type="text" id="memberId" name="memberId">
+                            </div>
+                            <div class="form-group">
+                                <label for="groupNumber">Group Number</label>
+                                <input type="text" id="groupNumber" name="groupNumber">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subscriberName">Subscriber Name (if different from patient)</label>
+                            <input type="text" id="subscriberName" name="subscriberName">
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required>
+
+                <!-- Appointment Preferences Section -->
+                <div class="form-section">
+                    <h4>Appointment Preferences</h4>
+                    
+                    <div class="form-group">
+                        <label for="appointmentType">Appointment Type *</label>
+                        <select id="appointmentType" name="appointmentType" required>
+                            <option value="">Select appointment type</option>
+                            <option value="initial-consultation">Initial Consultation (90 minutes)</option>
+                            <option value="individual-therapy">Individual Therapy (50 minutes)</option>
+                            <option value="couples-therapy">Couples Therapy (80 minutes)</option>
+                            <option value="family-therapy">Family Therapy (80 minutes)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferredDate">Preferred Date *</label>
+                            <input type="date" id="preferredDate" name="preferredDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredTime">Preferred Time *</label>
+                            <select id="preferredTime" name="preferredTime" required>
+                                <option value="">Select time</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                                <option value="6:00 PM">6:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sessionFormat">Session Format *</label>
+                        <select id="sessionFormat" name="sessionFormat" required>
+                            <option value="">Select format</option>
+                            <option value="in-person">In-Person</option>
+                            <option value="telehealth">Telehealth (Video)</option>
+                        </select>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="preferredTime">Preferred Contact Time</label>
-                    <select id="preferredTime" name="preferredTime">
-                        <option value="any" selected>Any time</option>
-                        <option value="morning">Morning (9 AM - 12 PM)</option>
-                        <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
-                        <option value="evening">Evening (5 PM - 8 PM)</option>
-                    </select>
+
+                <!-- Clinical Information Section -->
+                <div class="form-section">
+                    <h4>Clinical Information</h4>
+                    
+                    <div class="form-group">
+                        <label for="reasonForVisit">Primary reason for seeking therapy *</label>
+                        <select id="reasonForVisit" name="reasonForVisit" required>
+                            <option value="">Select primary concern</option>
+                            <option value="anxiety">Anxiety</option>
+                            <option value="depression">Depression</option>
+                            <option value="relationship">Relationship Issues</option>
+                            <option value="trauma">Trauma/PTSD</option>
+                            <option value="grief">Grief/Loss</option>
+                            <option value="stress">Stress Management</option>
+                            <option value="life-transition">Life Transitions</option>
+                            <option value="family">Family Issues</option>
+                            <option value="work">Work/Career Issues</option>
+                            <option value="self-esteem">Self-Esteem</option>
+                            <option value="addiction">Addiction/Substance Use</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="previousTherapy">Have you received therapy or counseling before?</label>
+                        <select id="previousTherapy" name="previousTherapy">
+                            <option value="">Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentMedications">Are you currently taking any psychiatric medications?</label>
+                        <select id="currentMedications" name="currentMedications">
+                            <option value="">Please select</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additionalInfo">Additional information you'd like to share (optional)</label>
+                        <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Any additional information that might help prepare for your session..."></textarea>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="message">Tell me a bit about what brings you to therapy (optional)</label>
-                    <textarea id="message" name="message" rows="4" placeholder="This information helps me prepare for our conversation..."></textarea>
+
+                <!-- Emergency Contact Section -->
+                <div class="form-section">
+                    <h4>Emergency Contact</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="emergencyContactName">Emergency Contact Name *</label>
+                            <input type="text" id="emergencyContactName" name="emergencyContactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="emergencyContactRelation">Relationship *</label>
+                            <input type="text" id="emergencyContactRelation" name="emergencyContactRelation" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="emergencyContactPhone">Emergency Contact Phone *</label>
+                        <input type="tel" id="emergencyContactPhone" name="emergencyContactPhone" required>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="consent" name="consent" required>
-                        I understand that this form is not a secure method of communication and I consent to Michael Ellis, LCSW contacting me via the information provided.
-                    </label>
+
+                <!-- Consent and HIPAA Section -->
+                <div class="form-section consent-section">
+                    <h4>Consent and Privacy</h4>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="hipaaConsent" name="hipaaConsent" required>
+                            I acknowledge that I have received and understand the Notice of Privacy Practices and consent to the use and disclosure of my protected health information for treatment, payment, and healthcare operations.
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="treatmentConsent" name="treatmentConsent" required>
+                            I consent to receive mental health treatment from Michael Ellis, LCSW at Winchester Therapy Services LLC.
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="communicationConsent" name="communicationConsent" required>
+                            I consent to communication via the contact methods provided above for appointment scheduling and treatment-related matters.
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="insuranceConsent" name="insuranceConsent">
+                            I authorize Winchester Therapy Services LLC to bill my insurance company and release necessary information for billing purposes.
+                        </label>
+                    </div>
                 </div>
                 
                 <button type="submit" class="cta-button submit-button" id="submitBtn">
-                    Submit Request
+                    Schedule Appointment
                 </button>
                 
                 <div id="formMessage" class="form-message"></div>

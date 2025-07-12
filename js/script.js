@@ -29,8 +29,32 @@ function hideConsultationForm() {
 
 // Event listeners will be set up in DOMContentLoaded
 
-// Handle consultation form submission
-async function submitConsultationForm(event) {
+// Toggle insurance fields visibility
+function toggleInsuranceFields() {
+    const hasInsurance = document.getElementById('hasInsurance').value;
+    const insuranceFields = document.getElementById('insuranceFields');
+    const insuranceInputs = insuranceFields.querySelectorAll('input, select');
+    
+    if (hasInsurance === 'yes') {
+        insuranceFields.style.display = 'block';
+        // Make insurance fields required
+        insuranceInputs.forEach(input => {
+            if (input.id === 'insuranceProvider' || input.id === 'memberId') {
+                input.required = true;
+            }
+        });
+    } else {
+        insuranceFields.style.display = 'none';
+        // Remove required attribute
+        insuranceInputs.forEach(input => {
+            input.required = false;
+            input.value = '';
+        });
+    }
+}
+
+// Handle booking form submission
+async function submitBookingForm(event) {
     event.preventDefault();
     
     const submitBtn = document.getElementById('submitBtn');
@@ -39,18 +63,85 @@ async function submitConsultationForm(event) {
     
     // Disable submit button
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
+    submitBtn.textContent = 'Scheduling...';
     formMessage.textContent = '';
+    formMessage.className = 'form-message';
     
     // Get form data
     const formData = new FormData(form);
+    
+    // Validate required consent checkboxes
+    const requiredConsents = ['hipaaConsent', 'treatmentConsent', 'communicationConsent'];
+    for (const consent of requiredConsents) {
+        if (!formData.get(consent)) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'Please agree to all required consent forms.';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Schedule Appointment';
+            return;
+        }
+    }
+    
+    // Validate insurance fields if insurance is selected
+    if (formData.get('hasInsurance') === 'yes') {
+        if (!formData.get('insuranceProvider') || !formData.get('memberId')) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'Please complete all required insurance information.';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Schedule Appointment';
+            return;
+        }
+    }
+    
+    // Prepare data for submission
     const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
+        // Personal Information
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        fullName: `${formData.get('firstName')} ${formData.get('lastName')}`,
+        dateOfBirth: formData.get('dateOfBirth'),
+        gender: formData.get('gender'),
+        address: formData.get('address'),
+        city: formData.get('city'),
+        state: formData.get('state'),
+        zipCode: formData.get('zipCode'),
         phone: formData.get('phone'),
-        message: formData.get('message'),
+        email: formData.get('email'),
+        
+        // Insurance Information
+        hasInsurance: formData.get('hasInsurance'),
+        insuranceProvider: formData.get('insuranceProvider') || 'N/A',
+        memberId: formData.get('memberId') || 'N/A',
+        groupNumber: formData.get('groupNumber') || 'N/A',
+        subscriberName: formData.get('subscriberName') || 'Same as patient',
+        
+        // Appointment Information
+        appointmentType: formData.get('appointmentType'),
+        preferredDate: formData.get('preferredDate'),
         preferredTime: formData.get('preferredTime'),
-        type: 'Consultation Request'
+        sessionFormat: formData.get('sessionFormat'),
+        
+        // Clinical Information
+        reasonForVisit: formData.get('reasonForVisit'),
+        previousTherapy: formData.get('previousTherapy') || 'Not specified',
+        currentMedications: formData.get('currentMedications') || 'Not specified',
+        additionalInfo: formData.get('additionalInfo') || 'None provided',
+        
+        // Emergency Contact
+        emergencyContactName: formData.get('emergencyContactName'),
+        emergencyContactRelation: formData.get('emergencyContactRelation'),
+        emergencyContactPhone: formData.get('emergencyContactPhone'),
+        
+        // Consent Information
+        hipaaConsent: formData.get('hipaaConsent') ? 'Yes' : 'No',
+        treatmentConsent: formData.get('treatmentConsent') ? 'Yes' : 'No',
+        communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
+        insuranceConsent: formData.get('insuranceConsent') ? 'Yes' : 'No',
+        
+        // Metadata
+        type: 'Direct Booking',
+        submissionDate: new Date().toISOString(),
+        status: 'Pending Confirmation'
     };
     
     try {
@@ -64,39 +155,36 @@ async function submitConsultationForm(event) {
         
         if (response.ok) {
             const result = await response.json();
-            console.log('Form submission successful:', result);
-            formMessage.style.color = '#27ae60';
-            formMessage.textContent = 'Thank you! I will contact you within 24 hours to schedule your consultation.';
+            console.log('Booking submission successful:', result);
+            formMessage.className = 'form-message success';
+            formMessage.textContent = 'Appointment request submitted successfully! I will contact you within 24 hours to confirm your appointment details and verify insurance coverage.';
             form.reset();
             
-            // Hide modal after 3 seconds
+            // Hide modal after 5 seconds
             setTimeout(() => {
                 hideConsultationForm();
-            }, 3000);
+            }, 5000);
         } else {
             const errorData = await response.json().catch(() => ({}));
-            console.error('Form submission failed:');
+            console.error('Booking submission failed:');
             console.error('- Status:', response.status);
             console.error('- Response:', errorData);
             
-            formMessage.style.color = '#e74c3c';
-            formMessage.textContent = `Error ${response.status}: ${errorData.details || 'Submission failed'}`;
-            throw new Error(`Submission failed with status ${response.status}`);
+            formMessage.className = 'form-message error';
+            formMessage.textContent = `Error ${response.status}: ${errorData.details || 'Booking submission failed. Please try again.'}`;
         }
     } catch (error) {
-        console.error('=== CLIENT ERROR ===');
+        console.error('=== BOOKING SUBMISSION ERROR ===');
         console.error('Error type:', error.constructor.name);
         console.error('Error message:', error.message);
         console.error('Full error:', error);
         
-        if (!formMessage.textContent.includes('Error')) {
-            formMessage.style.color = '#e74c3c';
-            formMessage.textContent = 'There was an error submitting your request. Check console for details.';
-        }
+        formMessage.className = 'form-message error';
+        formMessage.textContent = 'There was an error submitting your booking request. Please try again or call us directly.';
     } finally {
         // Re-enable submit button
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit Request';
+        submitBtn.textContent = 'Schedule Appointment';
     }
 }
 
