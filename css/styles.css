@@ -8,8 +8,8 @@
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
-    color: #333;
-    background-color: #f8f9fa;
+    color: #4a4a4a;
+    background-color: #f7f5f3;
 }
 
 .container {
@@ -26,52 +26,66 @@ h1, h2, h3 {
 
 h1 {
     font-size: 2.5rem;
-    color: #2c3e50;
+    color: #6b5b73;
 }
 
 h2 {
     font-size: 2rem;
-    color: #34495e;
+    color: #6b5b73;
 }
 
 h3 {
     font-size: 1.5rem;
-    color: #34495e;
+    color: #6b5b73;
 }
 
 p {
     margin-bottom: 1rem;
-    color: #555;
+    color: #5a5a5a;
 }
 
 /* Button Styles */
 .cta-button {
     display: inline-block;
     padding: 12px 30px;
-    background-color: #3498db;
+    background-color: #7a8ca8;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     font-weight: 600;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
     font-size: 1rem;
+    box-shadow: 0 3px 10px rgba(122, 140, 168, 0.3);
 }
 
 .cta-button:hover {
-    background-color: #2980b9;
+    background-color: #6b7d95;
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(122, 140, 168, 0.4);
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6b8db5 0%, #d4c4a8 50%, #c8a882 100%);
     color: white;
     padding: 100px 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(107, 141, 181, 0.1) 0%, rgba(212, 196, 168, 0.2) 50%, rgba(200, 168, 130, 0.1) 100%);
+    pointer-events: none;
 }
 
 .hero-content {
@@ -102,13 +116,15 @@ p {
 }
 
 .hero-cta {
-    background-color: #e74c3c;
+    background-color: #8b6f47;
     font-size: 1.2rem;
     padding: 15px 40px;
+    box-shadow: 0 5px 15px rgba(139, 111, 71, 0.5);
 }
 
 .hero-cta:hover {
-    background-color: #c0392b;
+    background-color: #7a5f3a;
+    box-shadow: 0 7px 20px rgba(139, 111, 71, 0.6);
 }
 
 .hero-image {
@@ -116,21 +132,26 @@ p {
 }
 
 .hero-img {
-    max-width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 450px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(107, 141, 181, 0.4);
+    object-fit: cover;
+    object-position: center;
+    border: 3px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Booking Section */
 .booking-section {
-    background-color: white;
+    background-color: #ffffff;
     padding: 80px 0;
     text-align: center;
 }
 
 .section-title {
     margin-bottom: 1.5rem;
-    color: #2c3e50;
+    color: #6b5b73;
+    text-align: center;
 }
 
 .booking-description {
@@ -150,44 +171,57 @@ p {
 }
 
 .booking-option {
-    background-color: #f8f9fa;
+    background-color: #faf9f7;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(139, 115, 85, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e8e0d6;
 }
 
 .booking-option:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(139, 115, 85, 0.2);
 }
 
 .booking-option h3 {
-    color: #2c3e50;
+    color: #6b5b73;
     margin-bottom: 1rem;
     font-size: 1.3rem;
 }
 
 .booking-option p {
     margin-bottom: 2rem;
-    color: #666;
+    color: #5a5a5a;
 }
 
 .booking-cta {
-    background-color: #27ae60;
+    background-color: #7a8ca8;
     font-size: 1.1rem;
     padding: 12px 30px;
     width: 100%;
 }
 
 .booking-cta:hover {
-    background-color: #219a52;
+    background-color: #6b7d95;
 }
 
 /* Approach Section */
 .approach-section {
-    background-color: #ecf0f1;
+    background: linear-gradient(135deg, #f7f4f0 0%, #e8ddd4 100%);
     padding: 80px 0;
+    position: relative;
+}
+
+.approach-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(107, 91, 115, 0.05) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .approach-content {
@@ -203,10 +237,11 @@ p {
 
 .therapist-img {
     max-width: 100%;
-    border-radius: 50%;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(107, 91, 115, 0.3);
     max-height: 400px;
     object-fit: cover;
+    border: 2px solid rgba(107, 91, 115, 0.1);
 }
 
 .approach-description {
@@ -216,16 +251,16 @@ p {
 }
 
 .approach-cta {
-    background-color: #8e44ad;
+    background-color: #8b7a6b;
 }
 
 .approach-cta:hover {
-    background-color: #7d3c98;
+    background-color: #7a6b5c;
 }
 
 /* Background Section */
 .background-section {
-    background-color: white;
+    background-color: #ffffff;
     padding: 80px 0;
 }
 
@@ -237,7 +272,7 @@ p {
 .background-text h3 {
     margin-top: 2rem;
     margin-bottom: 1rem;
-    color: #2c3e50;
+    color: #6b5b73;
 }
 
 .background-text p {
@@ -256,7 +291,7 @@ p {
 }
 
 .expertise-list li {
-    background-color: #3498db;
+    background-color: #8b7355;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -300,10 +335,36 @@ p {
     color: black;
 }
 
+.location-actions {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    justify-content: center;
+}
+
+.secondary-button {
+    background-color: #a89584 !important;
+}
+
+.secondary-button:hover {
+    background-color: #968570 !important;
+}
+
 .map-container {
     margin-top: 20px;
     border-radius: 10px;
     overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .location-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .location-actions .cta-button {
+        width: 100%;
+    }
 }
 
 /* Form Styles */
@@ -363,17 +424,17 @@ p {
 .submit-button {
     width: 100%;
     margin-top: 1rem;
-    background-color: #27ae60;
+    background-color: #7a8ca8;
     font-size: 1.1rem;
     padding: 15px;
 }
 
 .submit-button:hover {
-    background-color: #219a52;
+    background-color: #6b7d95;
 }
 
 .submit-button:disabled {
-    background-color: #95a5a6;
+    background-color: #c4b8a8;
     cursor: not-allowed;
     transform: none;
 }
@@ -388,7 +449,7 @@ p {
 
 /* Footer */
 .footer {
-    background-color: #2c3e50;
+    background-color: #6b5b73;
     color: white;
     padding: 40px 0;
     text-align: center;

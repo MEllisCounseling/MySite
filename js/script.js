@@ -133,6 +133,44 @@ async function submitToAirtable(data) {
     }
 }
 
+// Copy address to clipboard
+function copyAddress() {
+    const address = '1220 Amherst Street, Floor 2, Winchester, VA 22601';
+    navigator.clipboard.writeText(address).then(() => {
+        showSuccessMessage('Address copied to clipboard!');
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = address;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showSuccessMessage('Address copied to clipboard!');
+    });
+}
+
+// Open navigation app
+function openNavigation() {
+    const address = '1220 Amherst Street, Floor 2, Winchester, VA 22601';
+    const encodedAddress = encodeURIComponent(address);
+    
+    // Try to detect if user is on mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        // Try to open native maps app first
+        window.open(`maps://maps.google.com/maps?daddr=${encodedAddress}`, '_system');
+        // Fallback to Google Maps web
+        setTimeout(() => {
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
+        }, 1000);
+    } else {
+        // Open Google Maps in new tab for desktop
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
+    }
+}
+
 // Show success message
 function showSuccessMessage(message) {
     const messageDiv = document.createElement('div');
@@ -186,12 +224,17 @@ document.addEventListener('DOMContentLoaded', function() {
     consultationModal = document.getElementById('consultationModal');
     closeBtn = document.querySelector('.close');
     
-    // Set up event listeners
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
+    // Set up event listeners for all close buttons
+    const closeButtons = document.querySelectorAll('.close');
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Find the parent modal and close it
+            const parentModal = btn.closest('.modal');
+            if (parentModal) {
+                parentModal.style.display = 'none';
+            }
         });
-    }
+    });
     
     // Close modal when clicking outside of it
     window.addEventListener('click', function(event) {
@@ -208,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (heroBtn) {
         heroBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            document.querySelector('.booking-section').scrollIntoView({
+            document.querySelector('.background-section').scrollIntoView({
                 behavior: 'smooth'
             });
         });
