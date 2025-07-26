@@ -98,7 +98,7 @@ async function submitBookingForm(event) {
         email: formData.get('email'),
         
         // Consultation Information
-        appointmentType: 'Free 20-Minute Consultation',
+        appointmentType: 'Free 15-Minute Consultation',
         preferredDate: formData.get('preferredDate'),
         preferredTime: formData.get('preferredTime'),
         sessionFormat: formData.get('sessionFormat'),
@@ -131,7 +131,7 @@ async function submitBookingForm(event) {
             const result = await response.json();
             console.log('Booking submission successful:', result);
             formMessage.className = 'form-message success';
-            formMessage.textContent = 'Free consultation request submitted successfully! I will contact you within 24 hours to schedule your 20-minute consultation.';
+            formMessage.textContent = 'Free consultation request submitted successfully! I will contact you within 24 hours to schedule your 15-minute consultation.';
             form.reset();
             
             // Hide modal after 5 seconds
