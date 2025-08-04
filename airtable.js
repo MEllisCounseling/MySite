@@ -75,16 +75,10 @@ exports.handler = async (event, context) => {
                 'Email': data.email || '',
                 // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
-                'Address': data.address || ''
-                // ZIP Code temporarily removed due to field type mismatch
+                'Address': data.address || '',
+                'Zip Code': data.zipCode || ''
             }
         };
-        
-        // TEMPORARILY DISABLED: ZIP Code field causing issues
-        // Will re-enable once we confirm the field type in Airtable
-        // if (data.zipCode && data.zipCode.toString().length === 5) {
-        //     record.fields['Zip Code'] = data.zipCode;
-        // }
         
         // Still commented out - will add more fields gradually:
         // 'Gender': data.gender || 'Not specified',
