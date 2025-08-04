@@ -33,6 +33,7 @@ exports.handler = async (event, context) => {
         // Parse the request body
         const data = JSON.parse(event.body);
         console.log('Parsed form data:', data);
+        console.log('ZIP Code value received:', data.zipCode, 'Type:', typeof data.zipCode);
         
         // Airtable configuration from environment variables
         const airtableApiKey = process.env.AIRTABLE_API_KEY;
@@ -76,7 +77,7 @@ exports.handler = async (event, context) => {
                 // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
                 'Address': data.address || '',
-                'Zip Code': data.zipCode || ''
+                'Zip Code': data.zipCode ? parseInt(data.zipCode, 10) : null
             }
         };
         
