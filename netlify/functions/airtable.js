@@ -73,10 +73,10 @@ exports.handler = async (event, context) => {
                 'State': data.state || '',
                 'Phone': data.phone || '',
                 'Email': data.email || '',
-                // BATCH 2: Optional fields
+                // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
                 'Address': data.address || '',
-                'Zip Code': data.zipCode || '',
+                'Zip Code': data.zipCode ? parseInt(data.zipCode, 10) : null,
                 // Still commented out - will add more fields gradually:
                 // 'Gender': data.gender || 'Not specified',
                 // 'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',

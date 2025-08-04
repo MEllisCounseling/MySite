@@ -111,6 +111,17 @@ async function submitBookingForm(event) {
         }
     }
     
+    // Additional validation for optional fields with specific formats
+    const zipCodeValue = formData.get('zipCode');
+    if (zipCodeValue && (zipCodeValue.length !== 5 || !/^\d{5}$/.test(zipCodeValue))) {
+        formMessage.className = 'form-message error';
+        formMessage.textContent = 'ZIP Code must be exactly 5 digits (e.g., 12345).';
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Free Consultation';
+        return;
+    }
+    
     // Prepare data for submission
     const data = {
         // Personal Information
