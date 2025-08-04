@@ -696,11 +696,13 @@ p {
 /* Booking Form Specific Styles */
 .booking-modal {
     max-width: 800px;
-    max-height: 85vh;
+    max-height: 90vh;
     overflow-y: auto;
     /* Ensure scrollbar is visible */
     scrollbar-width: thin;
     scrollbar-color: #6b5b73 #f1f1f1;
+    /* Add padding to ensure content isn't cut off */
+    padding-bottom: 20px;
 }
 
 /* Webkit scrollbar styling for better visibility */
@@ -822,8 +824,11 @@ p {
     border-left-color: #2196f3;
     /* Make consent section more prominent */
     border: 2px solid #2196f3;
-    margin: 20px 0;
+    margin: 30px 0;
+    padding: 20px;
     position: relative;
+    /* Ensure it's always visible */
+    min-height: 200px;
 }
 
 .consent-section::before {
@@ -879,8 +884,24 @@ p {
 
 .form-message.error {
     background: #ffebee;
-    color: #c62828;
-    border: 1px solid #f44336;
+    color: #d32f2f;
+    border: 2px solid #f44336;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 500;
+    display: block;
+}
+
+.form-message.success {
+    background: #e8f5e8;
+    color: #2e7d32;
+    border: 2px solid #4caf50;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 500;
+    display: block;
 }
 
 /* Responsive adjustments for booking form */

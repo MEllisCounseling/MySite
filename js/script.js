@@ -70,12 +70,43 @@ async function submitBookingForm(event) {
     // Get form data
     const formData = new FormData(form);
     
-    // Validate required consent checkboxes
-    const requiredConsents = ['consultationConsent', 'communicationConsent', 'privacyConsent'];
-    for (const consent of requiredConsents) {
-        if (!formData.get(consent)) {
+    // Validate required consent checkboxes with specific messaging
+    const consentChecks = [
+        { name: 'consultationConsent', label: 'consultation understanding' },
+        { name: 'communicationConsent', label: 'communication consent' },
+        { name: 'privacyConsent', label: 'privacy consent' }
+    ];
+    
+    for (const consent of consentChecks) {
+        if (!formData.get(consent.name)) {
             formMessage.className = 'form-message error';
-            formMessage.textContent = 'Please agree to all consultation terms.';
+            formMessage.textContent = `Please check the ${consent.label} checkbox to continue. All consent agreements are required.`;
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Book Free Consultation';
+            return;
+        }
+    }
+    
+    // Validate required fields with better messaging
+    const requiredFields = [
+        { name: 'firstName', label: 'First Name' },
+        { name: 'lastName', label: 'Last Name' },
+        { name: 'city', label: 'City' },
+        { name: 'state', label: 'State' },
+        { name: 'phone', label: 'Phone Number' },
+        { name: 'email', label: 'Email Address' },
+        { name: 'preferredDate', label: 'Preferred Date' },
+        { name: 'preferredTime', label: 'Preferred Time' },
+        { name: 'sessionFormat', label: 'Session Format' }
+    ];
+    
+    for (const field of requiredFields) {
+        const value = formData.get(field.name);
+        if (!value || value.trim() === '') {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = `Please fill in the ${field.label} field.`;
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             submitBtn.disabled = false;
             submitBtn.textContent = 'Book Free Consultation';
             return;
@@ -85,36 +116,37 @@ async function submitBookingForm(event) {
     // Prepare data for submission
     const data = {
         // Personal Information
-        'First Name': formData.get('firstName'),
-        'Last Name': formData.get('lastName'),
-        'Date Of Birth': formData.get('dateOfBirth'),
-        'Gender': formData.get('gender') || 'Not specified',
-        'Address': formData.get('address'),
-        'City': formData.get('city'),
-        'State': formData.get('state'),
-        'Zip Code': formData.get('zipCode'),
-        'Phone': formData.get('phone'),
-        'Email': formData.get('email'),
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        fullName: `${formData.get('firstName')} ${formData.get('lastName')}`,
+        dateOfBirth: formData.get('dateOfBirth'),
+        gender: formData.get('gender') || 'Not specified',
+        address: formData.get('address'),
+        city: formData.get('city'),
+        state: formData.get('state'),
+        zipCode: formData.get('zipCode'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
         
         // Consultation Preferences
-        'Appointment Type': 'Free 15-Minute Consultation',
-        'Preferred Date': formData.get('preferredDate'),
-        'Preferred Time': formData.get('preferredTime'),
-        'Session Format': formData.get('sessionFormat'),
+        appointmentType: 'Free 15-Minute Consultation',
+        preferredDate: formData.get('preferredDate'),
+        preferredTime: formData.get('preferredTime'),
+        sessionFormat: formData.get('sessionFormat'),
         
         // Interest Information
-        'Reason For Visit': formData.get('reasonForVisit') || 'Not specified',
-        'Additional Information': formData.get('additionalInfo') || 'None provided',
+        reasonForVisit: formData.get('reasonForVisit') || 'Not specified',
+        additionalInfo: formData.get('additionalInfo') || 'None provided',
         
         // Consent Information
-        'Consultation Consent': formData.get('consultationConsent') ? 'Yes' : 'No',
-        'Communication Consent': formData.get('communicationConsent') ? 'Yes' : 'No',
-        'Privacy Consent': formData.get('privacyConsent') ? 'Yes' : 'No',
+        consultationConsent: formData.get('consultationConsent') ? 'Yes' : 'No',
+        communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
+        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No',
         
         // Metadata
-        'Type': 'Free Consultation',
-        'Submitted': new Date().toISOString(),
-        'Status': 'Pending Confirmation'
+        type: 'Free Consultation',
+        submissionDate: new Date().toISOString(),
+        status: 'Pending Confirmation'
     };
     
     try {
@@ -130,21 +162,49 @@ async function submitBookingForm(event) {
             const result = await response.json();
             console.log('Booking submission successful:', result);
             formMessage.className = 'form-message success';
-            formMessage.textContent = 'Free consultation request submitted successfully! I will contact you within 24 hours to schedule your 15-minute consultation.';
+            formMessage.textContent = '✅ Free consultation request submitted successfully! I will contact you within 24 hours to schedule your 15-minute consultation.';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             form.reset();
             
-            // Hide modal after 5 seconds
+            // Hide modal after 8 seconds to give user time to read message
             setTimeout(() => {
                 hideConsultationForm();
-            }, 5000);
+            }, 8000);
         } else {
             const errorData = await response.json().catch(() => ({}));
             console.error('Booking submission failed:');
             console.error('- Status:', response.status);
             console.error('- Response:', errorData);
+            console.error('- Full error details:', JSON.stringify(errorData, null, 2));
             
             formMessage.className = 'form-message error';
-            formMessage.textContent = `Error ${response.status}: ${errorData.details || 'Consultation request failed. Please try again.'}`;
+            let errorMessage = '❌ Unable to submit your consultation request. ';
+            
+            if (response.status === 500) {
+                if (errorData.error && errorData.error.includes('configuration missing')) {
+                    errorMessage += 'Configuration issue detected. Please contact us directly at (540) 431-7376.';
+                } else {
+                    errorMessage += 'There was a server error. Please try again in a few minutes or contact us directly at (540) 431-7376.';
+                }
+            } else if (response.status === 422) {
+                errorMessage += 'There was an issue with the form data. Please check all fields and try again.';
+            } else if (response.status === 429) {
+                errorMessage += 'Too many requests. Please wait a moment and try again.';
+            } else if (response.status === 401) {
+                errorMessage += 'Authentication error. Please contact us directly at (540) 431-7376.';
+            } else {
+                errorMessage += `Please try again or contact us directly at (540) 431-7376. Error: ${response.status}`;
+            }
+            
+            // Add debug info in development
+            if (window.location.hostname === 'localhost' || window.location.hostname.includes('netlify')) {
+                console.log('Debug: Check Netlify function logs for detailed error information');
+                console.log('Debug: Verify environment variables: AIRTABLE_API_KEY, THERAPY_BASE, AIRTABLE_TABLE_NAME');
+                console.log('Debug: Check Airtable field names match exactly');
+            }
+            
+            formMessage.textContent = errorMessage;
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     } catch (error) {
         console.error('=== BOOKING SUBMISSION ERROR ===');
@@ -153,7 +213,8 @@ async function submitBookingForm(event) {
         console.error('Full error:', error);
         
         formMessage.className = 'form-message error';
-        formMessage.textContent = 'There was an error submitting your consultation request. Please try again or call us directly.';
+        formMessage.textContent = '❌ Network error: Unable to submit your consultation request. Please check your internet connection and try again, or contact us directly at (540) 431-7376.';
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } finally {
         // Re-enable submit button
         submitBtn.disabled = false;

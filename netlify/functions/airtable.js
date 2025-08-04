@@ -53,13 +53,43 @@ exports.handler = async (event, context) => {
             return {
                 statusCode: 500,
                 headers,
-                body: JSON.stringify({ error: 'Airtable configuration missing' })
+                body: JSON.stringify({ 
+                    error: 'Airtable configuration missing',
+                    details: {
+                        hasApiKey: !!airtableApiKey,
+                        hasBaseId: !!airtableBaseId,
+                        hasTableName: !!airtableTableName
+                    }
+                })
             };
         }
 
-        // Prepare the record for Airtable - Consultation Form Data
+        // Prepare the record for Airtable - Map form fields to Airtable columns
         const record = {
-            fields: data
+            fields: {
+                'First Name': data.firstName || '',
+                'Last Name': data.lastName || '',
+                'Date Of Birth': data.dateOfBirth || '',
+                'Gender': data.gender || 'Not specified',
+                'Address': data.address || '',
+                'City': data.city || '',
+                'State': data.state || '',
+                'Zip Code': data.zipCode || '',
+                'Phone': data.phone || '',
+                'Email': data.email || '',
+                'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
+                'Preferred Date': data.preferredDate || '',
+                'Preferred Time': data.preferredTime || '',
+                'Session Format': data.sessionFormat || '',
+                'Reason For Visit': data.reasonForVisit || 'Not specified',
+                'Additional Information': data.additionalInfo || 'None provided',
+                'Consultation Consent': data.consultationConsent || 'No',
+                'Communication Consent': data.communicationConsent || 'No',
+                'Privacy Consent': data.privacyConsent || 'No',
+                'Type': data.type || 'Free Consultation',
+                'Submitted': data.submissionDate || new Date().toISOString(),
+                'Status': data.status || 'Pending Confirmation'
+            }
         };
 
         console.log('Record to be sent to Airtable:', JSON.stringify(record, null, 2));

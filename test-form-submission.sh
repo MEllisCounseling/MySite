@@ -27,7 +27,7 @@ curl -X POST "$SITE_URL/.netlify/functions/airtable" \
     "Email": "test.user@example.com",
     "Appointment Type": "Free 15-Minute Consultation",
     "Preferred Date": "2025-01-15",
-    "Preferred Time": "10:30",
+    "Preferred Time": "10:30 AM",
     "Session Format": "in-person",
     "Reason For Visit": "depression",
     "Additional Information": "Test submission to verify field mappings",
