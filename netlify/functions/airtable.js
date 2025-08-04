@@ -79,10 +79,10 @@ exports.handler = async (event, context) => {
                 'Address': data.address || '',
                 'Zip Code': data.zipCode ? Number(data.zipCode) : null,
                 
-                // BATCH 3: Consent fields (already implemented in frontend)
-                'Consultation Consent': data.consultationConsent || 'No',
-                'Communication Consent': data.communicationConsent || 'No',
-                'Privacy Consent': data.privacyConsent || 'No'
+                // BATCH 3: Consent fields (checkbox format: true for checked, omit for unchecked)
+                ...(data.consultationConsent === 'Yes' ? { 'Consultation Consent': true } : {}),
+                ...(data.communicationConsent === 'Yes' ? { 'Communication Consent': true } : {}),
+                ...(data.privacyConsent === 'Yes' ? { 'Privacy Consent': true } : {})
             }
         };
         
