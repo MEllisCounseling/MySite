@@ -77,7 +77,12 @@ exports.handler = async (event, context) => {
                 // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
                 'Address': data.address || '',
-                'Zip Code': data.zipCode ? Number(data.zipCode) : null
+                'Zip Code': data.zipCode ? Number(data.zipCode) : null,
+                
+                // BATCH 3: Consent fields (already implemented in frontend)
+                'Consultation Consent': data.consultationConsent || 'No',
+                'Communication Consent': data.communicationConsent || 'No',
+                'Privacy Consent': data.privacyConsent || 'No'
             }
         };
         
