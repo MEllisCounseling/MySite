@@ -394,6 +394,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize date/time validation
     initializeDateTimeValidation();
     
+    // DEBUG: Check if privacy consent checkbox exists
+    setTimeout(() => {
+        const privacyCheckbox = document.getElementById('privacyConsent');
+        const consentSection = document.querySelector('.consent-section');
+        const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        console.log('=== CHECKBOX DEBUG ===');
+        console.log('Privacy checkbox found:', !!privacyCheckbox);
+        console.log('Privacy checkbox element:', privacyCheckbox);
+        console.log('Consent section found:', !!consentSection);
+        console.log('Total checkboxes found:', allCheckboxes.length);
+        console.log('All checkboxes:', allCheckboxes);
+        
+        if (consentSection) {
+            console.log('Consent section HTML:', consentSection.innerHTML);
+        }
+        
+        // Try to create a test checkbox
+        if (!privacyCheckbox && consentSection) {
+            console.log('Privacy checkbox missing! Adding one manually...');
+            const testDiv = document.createElement('div');
+            testDiv.innerHTML = '<label style="background: red; color: white; padding: 10px;"><input type="checkbox" id="testPrivacyConsent" style="width: 30px; height: 30px;"> MANUAL TEST CHECKBOX</label>';
+            consentSection.appendChild(testDiv);
+        }
+    }, 1000);
+}
+    
     // Initialize DOM elements
     modal = document.getElementById('locationModal');
     consultationModal = document.getElementById('consultationModal');
