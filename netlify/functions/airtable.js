@@ -77,7 +77,7 @@ exports.handler = async (event, context) => {
                 // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
                 'Address': data.address || '',
-                'Zip Code': data.zipCode ? parseInt(data.zipCode, 10) : null
+                'Zip Code': data.zipCode || ''
             }
         };
         
