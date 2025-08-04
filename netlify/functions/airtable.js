@@ -76,6 +76,7 @@ exports.handler = async (event, context) => {
                 // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
                 'Address': data.address || ''
+                // ZIP Code temporarily removed due to field type mismatch
             }
         };
         
@@ -100,13 +101,15 @@ exports.handler = async (event, context) => {
         // NOTE: 'Submitted' should be Created Time type in Airtable (auto-filled)
         // 'Status': data.status || 'Pending Confirmation'
 
+        // Remove any empty fields to prevent Airtable errors
+        Object.keys(record.fields).forEach(key => {
+            if (record.fields[key] === '' || record.fields[key] === null || record.fields[key] === undefined) {
+                delete record.fields[key];
+            }
+        });
+
         console.log('Record to be sent to Airtable:', JSON.stringify(record, null, 2));
         console.log('Number of fields being sent:', Object.keys(record.fields).length);
-        console.log('ZIP Code debug:', {
-            raw: data.zipCode,
-            type: typeof data.zipCode,
-            length: data.zipCode ? data.zipCode.length : 'empty'
-        });
 
         // Make request to Airtable
         const airtableUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`;
