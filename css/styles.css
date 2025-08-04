@@ -696,8 +696,30 @@ p {
 /* Booking Form Specific Styles */
 .booking-modal {
     max-width: 800px;
-    max-height: 90vh;
+    max-height: 85vh;
     overflow-y: auto;
+    /* Ensure scrollbar is visible */
+    scrollbar-width: thin;
+    scrollbar-color: #6b5b73 #f1f1f1;
+}
+
+/* Webkit scrollbar styling for better visibility */
+.booking-modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.booking-modal::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.booking-modal::-webkit-scrollbar-thumb {
+    background: #6b5b73;
+    border-radius: 4px;
+}
+
+.booking-modal::-webkit-scrollbar-thumb:hover {
+    background: #5a4a63;
 }
 
 .hipaa-notice {
@@ -798,6 +820,23 @@ p {
 .consent-section {
     background: #f0f8ff;
     border-left-color: #2196f3;
+    /* Make consent section more prominent */
+    border: 2px solid #2196f3;
+    margin: 20px 0;
+    position: relative;
+}
+
+.consent-section::before {
+    content: "⚠️ Required Agreements";
+    font-weight: bold;
+    color: #2196f3;
+    background: #fff;
+    padding: 5px 10px;
+    position: absolute;
+    top: -12px;
+    left: 15px;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .consent-section .checkbox-label {

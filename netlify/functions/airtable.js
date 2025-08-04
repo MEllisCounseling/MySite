@@ -57,17 +57,9 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Prepare the record for Airtable
+        // Prepare the record for Airtable - Consultation Form Data
         const record = {
-            fields: {
-                'Name': data.name || '',
-                'Email': data.email || '',
-                'Phone': data.phone || '',
-                'Message': data.message || '',
-                'Preferred Time': data.preferredTime || '',
-                'Submitted': new Date().toISOString(),
-                'Type': data.type || 'Contact Form'
-            }
+            fields: data
         };
 
         console.log('Record to be sent to Airtable:', JSON.stringify(record, null, 2));

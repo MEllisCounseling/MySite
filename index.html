@@ -95,6 +95,7 @@
                 <div class="form-section">
                     <h4>Personal Information</h4>
                     
+                    <!-- Required Fields First -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
@@ -104,27 +105,6 @@
                             <label for="lastName">Last Name *</label>
                             <input type="text" id="lastName" name="lastName" required>
                         </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dateOfBirth">Date of Birth *</label>
-                            <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="MM/DD/YYYY" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select id="gender" name="gender">
-                                <option value="">Prefer not to say</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Address *</label>
-                        <input type="text" id="address" name="address" placeholder="Street Address" required>
                     </div>
                     
                     <div class="form-row">
@@ -142,10 +122,6 @@
                                 <option value="DC">Washington DC</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="zipCode">ZIP Code *</label>
-                            <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}" required>
-                        </div>
                     </div>
                     
                     <div class="form-row">
@@ -156,6 +132,34 @@
                         <div class="form-group">
                             <label for="email">Email Address *</label>
                             <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Optional Fields Last -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="MM/DD/YYYY">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender">
+                                <option value="">Prefer not to say</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" name="address" placeholder="Street Address">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code</label>
+                            <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}">
                         </div>
                     </div>
                 </div>
@@ -172,19 +176,7 @@
                         </div>
                         <div class="form-group">
                             <label for="preferredTime">Preferred Time *</label>
-                            <select id="preferredTime" name="preferredTime" required>
-                                <option value="">Select time</option>
-                                <option value="9:00 AM">9:00 AM</option>
-                                <option value="10:00 AM">10:00 AM</option>
-                                <option value="11:00 AM">11:00 AM</option>
-                                <option value="12:00 PM">12:00 PM</option>
-                                <option value="1:00 PM">1:00 PM</option>
-                                <option value="2:00 PM">2:00 PM</option>
-                                <option value="3:00 PM">3:00 PM</option>
-                                <option value="4:00 PM">4:00 PM</option>
-                                <option value="5:00 PM">5:00 PM</option>
-                                <option value="6:00 PM">6:00 PM</option>
-                            </select>
+                            <input type="time" id="preferredTime" name="preferredTime" required>
                         </div>
                     </div>
                     

@@ -85,37 +85,36 @@ async function submitBookingForm(event) {
     // Prepare data for submission
     const data = {
         // Personal Information
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
-        fullName: `${formData.get('firstName')} ${formData.get('lastName')}`,
-        dateOfBirth: formData.get('dateOfBirth'),
-        gender: formData.get('gender') || 'Not specified',
-        address: formData.get('address'),
-        city: formData.get('city'),
-        state: formData.get('state'),
-        zipCode: formData.get('zipCode'),
-        phone: formData.get('phone'),
-        email: formData.get('email'),
+        'First Name': formData.get('firstName'),
+        'Last Name': formData.get('lastName'),
+        'Date Of Birth': formData.get('dateOfBirth'),
+        'Gender': formData.get('gender') || 'Not specified',
+        'Address': formData.get('address'),
+        'City': formData.get('city'),
+        'State': formData.get('state'),
+        'Zip Code': formData.get('zipCode'),
+        'Phone': formData.get('phone'),
+        'Email': formData.get('email'),
         
-        // Consultation Information
-        appointmentType: 'Free 15-Minute Consultation',
-        preferredDate: formData.get('preferredDate'),
-        preferredTime: formData.get('preferredTime'),
-        sessionFormat: formData.get('sessionFormat'),
+        // Consultation Preferences
+        'Appointment Type': 'Free 15-Minute Consultation',
+        'Preferred Date': formData.get('preferredDate'),
+        'Preferred Time': formData.get('preferredTime'),
+        'Session Format': formData.get('sessionFormat'),
         
         // Interest Information
-        reasonForVisit: formData.get('reasonForVisit') || 'Not specified',
-        additionalInfo: formData.get('additionalInfo') || 'None provided',
+        'Reason For Visit': formData.get('reasonForVisit') || 'Not specified',
+        'Additional Information': formData.get('additionalInfo') || 'None provided',
         
         // Consent Information
-        consultationConsent: formData.get('consultationConsent') ? 'Yes' : 'No',
-        communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
-        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No',
+        'Consultation Consent': formData.get('consultationConsent') ? 'Yes' : 'No',
+        'Communication Consent': formData.get('communicationConsent') ? 'Yes' : 'No',
+        'Privacy Consent': formData.get('privacyConsent') ? 'Yes' : 'No',
         
         // Metadata
-        type: 'Free Consultation',
-        submissionDate: new Date().toISOString(),
-        status: 'Pending Confirmation'
+        'Type': 'Free Consultation',
+        'Submitted': new Date().toISOString(),
+        'Status': 'Pending Confirmation'
     };
     
     try {
@@ -162,38 +161,6 @@ async function submitBookingForm(event) {
     }
 }
 
-// Form submission handling (for future contact forms)
-function handleFormSubmission(formData) {
-    // This will be used for Airtable integration
-    console.log('Form data:', formData);
-    
-    // Send to Airtable
-    if (window.AIRTABLE_CONFIG) {
-        submitToAirtable(formData);
-    }
-}
-
-// Airtable integration function
-async function submitToAirtable(data) {
-    try {
-        const response = await fetch('/.netlify/functions/airtable', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-        
-        if (response.ok) {
-            showSuccessMessage('Thank you for your message! We will get back to you soon.');
-        } else {
-            showErrorMessage('There was an error sending your message. Please try again.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showErrorMessage('There was an error sending your message. Please try again.');
-    }
-}
 
 // Copy address to clipboard
 function copyAddress() {
@@ -347,69 +314,15 @@ function initializeNavigation() {
     updateActiveNavLink();
 }
 
-// Initialize date and time validation
+// Initialize date validation
 function initializeDateTimeValidation() {
     const dateInput = document.getElementById('preferredDate');
-    const timeSelect = document.getElementById('preferredTime');
     
     if (dateInput) {
         // Set minimum date to today
         const today = new Date().toISOString().split('T')[0];
         dateInput.setAttribute('min', today);
-        
-        // Add event listener for date changes
-        dateInput.addEventListener('change', function() {
-            validateTimeOptions();
-        });
     }
-    
-    function validateTimeOptions() {
-        if (!dateInput || !timeSelect) return;
-        
-        const selectedDate = new Date(dateInput.value);
-        const today = new Date();
-        const currentHour = today.getHours();
-        
-        // If selected date is today, disable past time slots
-        if (selectedDate.toDateString() === today.toDateString()) {
-            const timeOptions = timeSelect.querySelectorAll('option');
-            
-            timeOptions.forEach(option => {
-                if (option.value) {
-                    const timeString = option.value;
-                    const timeParts = timeString.match(/(\d+):(\d+)\s*(AM|PM)/);
-                    
-                    if (timeParts) {
-                        let hour = parseInt(timeParts[1]);
-                        const isPM = timeParts[3] === 'PM';
-                        
-                        // Convert to 24-hour format
-                        if (isPM && hour !== 12) hour += 12;
-                        if (!isPM && hour === 12) hour = 0;
-                        
-                        // Disable if time has passed (with 1-hour buffer)
-                        if (hour <= currentHour) {
-                            option.disabled = true;
-                            option.style.color = '#ccc';
-                        } else {
-                            option.disabled = false;
-                            option.style.color = '';
-                        }
-                    }
-                }
-            });
-        } else {
-            // Re-enable all options for future dates
-            const timeOptions = timeSelect.querySelectorAll('option');
-            timeOptions.forEach(option => {
-                option.disabled = false;
-                option.style.color = '';
-            });
-        }
-    }
-    
-    // Initial validation
-    validateTimeOptions();
 }
 
 // Initialize page functionality
