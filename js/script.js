@@ -122,40 +122,26 @@ async function submitBookingForm(event) {
         return;
     }
     
-    // Prepare data for submission
+    // Prepare data for submission - ONLY CURRENT FORM FIELDS
     const data = {
-        // Personal Information
+        // Personal Information - Required fields
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
-        fullName: `${formData.get('firstName')} ${formData.get('lastName')}`,
-        dateOfBirth: formData.get('dateOfBirth'),
-        gender: formData.get('gender') || 'Not specified',
-        address: formData.get('address'),
         city: formData.get('city'),
         state: formData.get('state'),
-        zipCode: formData.get('zipCode'),
         phone: formData.get('phone'),
         email: formData.get('email'),
         
-        // Consultation Preferences
-        appointmentType: 'Free 15-Minute Consultation',
-        preferredDate: formData.get('preferredDate'),
-        preferredTime: formData.get('preferredTime'),
-        sessionFormat: formData.get('sessionFormat'),
-        
-        // Interest Information
-        reasonForVisit: formData.get('reasonForVisit') || 'Not specified',
-        additionalInfo: formData.get('additionalInfo') || 'None provided',
+        // Personal Information - Optional fields  
+        dateOfBirth: formData.get('dateOfBirth') || '',
+        address: formData.get('address') || '',
+        // zipCode temporarily excluded due to field type issues
         
         // Consent Information
         consultationConsent: formData.get('consultationConsent') ? 'Yes' : 'No',
         communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
         privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No',
-        
-        // Metadata
-        type: 'Free Consultation',
-        submissionDate: new Date().toISOString(),
-        status: 'Pending Confirmation'
+        testCheckbox: formData.get('testCheckbox') ? 'Yes' : 'No'
     };
     
     try {
