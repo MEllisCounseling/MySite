@@ -74,8 +74,7 @@ async function submitBookingForm(event) {
     const consentChecks = [
         { name: 'consultationConsent', label: 'consultation understanding' },
         { name: 'privacyConsent', label: 'privacy consent' },
-        { name: 'communicationConsent', label: 'communication consent' },
-        { name: 'testCheckbox', label: 'test checkbox' }
+        { name: 'communicationConsent', label: 'communication consent' }
     ];
     
     for (const consent of consentChecks) {
@@ -140,8 +139,7 @@ async function submitBookingForm(event) {
         // Consent Information
         consultationConsent: formData.get('consultationConsent') ? 'Yes' : 'No',
         communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
-        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No',
-        testCheckbox: formData.get('testCheckbox') ? 'Yes' : 'No'
+        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No'
     };
     
     try {
