@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Winchester Therapy Services LLC - Michael Ellis, LCSW</title>
-    <link rel="stylesheet" href="css/styles.css?v=13">
+    <link rel="stylesheet" href="css/styles.css?v=14">
 </head>
 <body>
     <!-- Navigation -->
@@ -253,11 +253,19 @@
                         </label>
                     </div>
                     
-                    <!-- MOVED: Put privacyConsent in second position to test if it's position-specific -->
+                    <!-- TEST: Identical checkbox with different ID -->
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="privacyConsentTest" name="privacyConsentTest" required>
+                            I understand that my information will be kept confidential and used only for scheduling this consultation.
+                        </label>
+                    </div>
+                    
+                    <!-- ORIGINAL: privacyConsent checkbox -->
                     <div class="form-group">
                         <label class="checkbox-label">
                             <input type="checkbox" id="privacyConsent" name="privacyConsent" required>
-                            I understand that my information will be kept confidential and used only for scheduling this consultation.
+                            [ORIGINAL] I understand that my information will be kept confidential and used only for scheduling this consultation.
                         </label>
                     </div>
                     
@@ -403,6 +411,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js?v=10"></script>
+    <script src="js/script.js?v=11"></script>
 </body>
 </html>

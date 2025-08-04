@@ -73,9 +73,10 @@ async function submitBookingForm(event) {
     // Validate required consent checkboxes with specific messaging - MINIMAL FORM VERSION
     const consentChecks = [
         { name: 'consultationConsent', label: 'consultation understanding' },
+        { name: 'privacyConsentTest', label: 'privacy consent test' },
+        { name: 'privacyConsent', label: 'privacy consent original' },
         { name: 'communicationConsent', label: 'communication consent' },
-        { name: 'testCheckbox', label: 'test checkbox' },
-        { name: 'privacyConsent', label: 'privacy consent' }
+        { name: 'testCheckbox', label: 'test checkbox' }
     ];
     
     for (const consent of consentChecks) {
