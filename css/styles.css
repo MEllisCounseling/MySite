@@ -877,7 +877,7 @@ p {
     -moz-appearance: checkbox !important;
 }
 
-/* Specifically target the third checkbox */
+/* AGGRESSIVE FIX: Force privacyConsent checkbox to be visible and focusable */
 #privacyConsent {
     display: inline-block !important;
     visibility: visible !important;
@@ -885,8 +885,23 @@ p {
     width: 20px !important;
     height: 20px !important;
     margin-right: 10px !important;
+    position: relative !important;
+    z-index: 9999 !important;
     background: red !important; /* Debug: make it super obvious */
     border: 3px solid blue !important;
+    pointer-events: auto !important;
+    transform: none !important;
+    clip: none !important;
+    overflow: visible !important;
+}
+
+/* Force the parent label to be visible too */
+label[for="privacyConsent"], 
+input#privacyConsent + *,
+#privacyConsent ~ * {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 #insuranceFields {
