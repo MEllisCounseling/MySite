@@ -73,11 +73,12 @@ exports.handler = async (event, context) => {
                 'State': data.state || '',
                 'Phone': data.phone || '',
                 'Email': data.email || '',
+                // BATCH 2: Optional fields
+                'Date Of Birth': data.dateOfBirth || '',
+                'Address': data.address || '',
+                'Zip Code': data.zipCode || '',
                 // Still commented out - will add more fields gradually:
-                // 'Date Of Birth': data.dateOfBirth || '',
                 // 'Gender': data.gender || 'Not specified',
-                // 'Address': data.address || '',
-                // 'Zip Code': data.zipCode || '',
                 // 'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
                 // 'Preferred Date': data.preferredDate || '',
                 // 'Preferred Time': data.preferredTime || '',
