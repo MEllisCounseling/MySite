@@ -864,6 +864,31 @@ p {
     border: 2px solid #ffc107 !important;
 }
 
+/* Force the actual checkbox input to be visible */
+.consent-section input[type="checkbox"] {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 8px !important;
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+    -moz-appearance: checkbox !important;
+}
+
+/* Specifically target the third checkbox */
+#privacyConsent {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 10px !important;
+    background: red !important; /* Debug: make it super obvious */
+    border: 3px solid blue !important;
+}
+
 #insuranceFields {
     margin-top: 15px;
     padding: 15px;
