@@ -64,19 +64,20 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Prepare the record for Airtable - Map form fields to Airtable columns
+        // Prepare the record for Airtable - Map form fields to Airtable columns - ADDING FIELDS SLOWLY
         const record = {
             fields: {
                 'First Name': data.firstName || '',
                 'Last Name': data.lastName || '',
+                'City': data.city || '',
+                'State': data.state || '',
+                'Phone': data.phone || '',
+                'Email': data.email || '',
+                // Still commented out - will add more fields gradually:
                 // 'Date Of Birth': data.dateOfBirth || '',
                 // 'Gender': data.gender || 'Not specified',
                 // 'Address': data.address || '',
-                'City': data.city || '',
-                'State': data.state || '',
                 // 'Zip Code': data.zipCode || '',
-                'Phone': data.phone || '',
-                'Email': data.email || '',
                 // 'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
                 // 'Preferred Date': data.preferredDate || '',
                 // 'Preferred Time': data.preferredTime || '',
@@ -87,7 +88,7 @@ exports.handler = async (event, context) => {
                 // 'Communication Consent': data.communicationConsent || 'No',
                 // 'Privacy Consent': data.privacyConsent || 'No',
                 // 'Type': data.type || 'Free Consultation',
-                // 'Submitted': data.submissionDate || new Date().toISOString(),
+                // NOTE: 'Submitted' should be Created Time type in Airtable (auto-filled)
                 // 'Status': data.status || 'Pending Confirmation'
             }
         };

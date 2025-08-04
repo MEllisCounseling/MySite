@@ -89,12 +89,14 @@ async function submitBookingForm(event) {
         }
     }
     
-    // Validate required fields with better messaging - MINIMAL FORM VERSION
+    // Validate required fields with better messaging - ADDING FIELDS BACK SLOWLY
     const requiredFields = [
         { name: 'firstName', label: 'First Name' },
         { name: 'lastName', label: 'Last Name' },
-        { name: 'email', label: 'Email Address' }
-        // Removed other fields since they're commented out in HTML for minimal testing
+        { name: 'email', label: 'Email Address' },
+        { name: 'phone', label: 'Phone Number' },
+        { name: 'city', label: 'City' },
+        { name: 'state', label: 'State' }
     ];
     
     for (const field of requiredFields) {

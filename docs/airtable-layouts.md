@@ -67,7 +67,7 @@ The Airtable integration requires these environment variables:
 | Airtable Field Name | Data Source | Data Type | Required | Default Value | Notes |
 |---------------------|-------------|-----------|----------|---------------|-------|
 | Type | Static | Text | Auto | 'Free Consultation' | Form type identifier |
-| Submitted | `new Date().toISOString()` | DateTime | Auto | Current timestamp | When form was submitted |
+| Submitted | N/A | Created Time | Auto | Auto-filled by Airtable | When record was created (no code needed) |
 | Status | Static | Single Select | Auto | 'Pending Confirmation' | Consultation processing status |
 
 **Status Field Options (Single Select):**
