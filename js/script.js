@@ -419,7 +419,6 @@ document.addEventListener('DOMContentLoaded', function() {
             consentSection.appendChild(testDiv);
         }
     }, 1000);
-}
     
     // Initialize DOM elements
     modal = document.getElementById('locationModal');
