@@ -93,6 +93,7 @@ exports.handler = async (event, context) => {
         };
 
         console.log('Record to be sent to Airtable:', JSON.stringify(record, null, 2));
+        console.log('Number of fields being sent:', Object.keys(record.fields).length);
 
         // Make request to Airtable
         const airtableUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`;
@@ -121,15 +122,25 @@ exports.handler = async (event, context) => {
             };
         } else {
             const errorText = await response.text();
-            console.error('Airtable API Error Details:');
+            console.error('=== AIRTABLE API ERROR ===');
             console.error('- Status:', response.status);
             console.error('- Status Text:', response.statusText);
             console.error('- Response Body:', errorText);
+            console.error('- Request URL:', airtableUrl);
+            console.error('- Request Headers:', JSON.stringify({
+                'Authorization': `Bearer ${airtableApiKey.substring(0, 10)}...`,
+                'Content-Type': 'application/json'
+            }));
             
             let errorData;
             try {
                 errorData = JSON.parse(errorText);
-                console.error('- Parsed Error:', errorData);
+                console.error('- Parsed Error:', JSON.stringify(errorData, null, 2));
+                
+                // Log specific field errors if they exist
+                if (errorData.error && errorData.error.details) {
+                    console.error('- Field-specific errors:', JSON.stringify(errorData.error.details, null, 2));
+                }
             } catch (e) {
                 console.error('- Could not parse error as JSON');
             }
@@ -140,7 +151,8 @@ exports.handler = async (event, context) => {
                 body: JSON.stringify({ 
                     error: 'Failed to save to Airtable',
                     details: errorData || errorText,
-                    status: response.status
+                    status: response.status,
+                    airtableError: errorData
                 })
             };
         }
