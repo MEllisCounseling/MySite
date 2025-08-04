@@ -75,27 +75,37 @@ exports.handler = async (event, context) => {
                 'Email': data.email || '',
                 // BATCH 2: Optional fields  
                 'Date Of Birth': data.dateOfBirth || '',
-                'Address': data.address || '',
-                'Zip Code': data.zipCode ? parseInt(data.zipCode, 10) : null,
-                // Still commented out - will add more fields gradually:
-                // 'Gender': data.gender || 'Not specified',
-                // 'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
-                // 'Preferred Date': data.preferredDate || '',
-                // 'Preferred Time': data.preferredTime || '',
-                // 'Session Format': data.sessionFormat || '',
-                // 'Reason For Visit': data.reasonForVisit || 'Not specified',
-                // 'Additional Information': data.additionalInfo || 'None provided',
-                // 'Consultation Consent': data.consultationConsent || 'No',
-                // 'Communication Consent': data.communicationConsent || 'No',
-                // 'Privacy Consent': data.privacyConsent || 'No',
-                // 'Type': data.type || 'Free Consultation',
-                // NOTE: 'Submitted' should be Created Time type in Airtable (auto-filled)
-                // 'Status': data.status || 'Pending Confirmation'
+                'Address': data.address || ''
             }
         };
+        
+        // Only add ZIP code if it exists and is valid
+        if (data.zipCode && data.zipCode.toString().length === 5) {
+            record.fields['Zip Code'] = data.zipCode;
+        }
+        
+        // Still commented out - will add more fields gradually:
+        // 'Gender': data.gender || 'Not specified',
+        // 'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
+        // 'Preferred Date': data.preferredDate || '',
+        // 'Preferred Time': data.preferredTime || '',
+        // 'Session Format': data.sessionFormat || '',
+        // 'Reason For Visit': data.reasonForVisit || 'Not specified',
+        // 'Additional Information': data.additionalInfo || 'None provided',
+        // 'Consultation Consent': data.consultationConsent || 'No',
+        // 'Communication Consent': data.communicationConsent || 'No',
+        // 'Privacy Consent': data.privacyConsent || 'No',
+        // 'Type': data.type || 'Free Consultation',
+        // NOTE: 'Submitted' should be Created Time type in Airtable (auto-filled)
+        // 'Status': data.status || 'Pending Confirmation'
 
         console.log('Record to be sent to Airtable:', JSON.stringify(record, null, 2));
         console.log('Number of fields being sent:', Object.keys(record.fields).length);
+        console.log('ZIP Code debug:', {
+            raw: data.zipCode,
+            type: typeof data.zipCode,
+            length: data.zipCode ? data.zipCode.length : 'empty'
+        });
 
         // Make request to Airtable
         const airtableUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`;
