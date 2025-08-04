@@ -70,10 +70,11 @@ async function submitBookingForm(event) {
     // Get form data
     const formData = new FormData(form);
     
-    // Validate required consent checkboxes with specific messaging
+    // Validate required consent checkboxes with specific messaging - MINIMAL FORM VERSION
     const consentChecks = [
         { name: 'consultationConsent', label: 'consultation understanding' },
         { name: 'communicationConsent', label: 'communication consent' },
+        { name: 'testCheckbox', label: 'test checkbox' },
         { name: 'privacyConsent', label: 'privacy consent' }
     ];
     
@@ -88,17 +89,12 @@ async function submitBookingForm(event) {
         }
     }
     
-    // Validate required fields with better messaging
+    // Validate required fields with better messaging - MINIMAL FORM VERSION
     const requiredFields = [
         { name: 'firstName', label: 'First Name' },
         { name: 'lastName', label: 'Last Name' },
-        { name: 'city', label: 'City' },
-        { name: 'state', label: 'State' },
-        { name: 'phone', label: 'Phone Number' },
-        { name: 'email', label: 'Email Address' },
-        { name: 'preferredDate', label: 'Preferred Date' },
-        { name: 'preferredTime', label: 'Preferred Time' },
-        { name: 'sessionFormat', label: 'Session Format' }
+        { name: 'email', label: 'Email Address' }
+        // Removed other fields since they're commented out in HTML for minimal testing
     ];
     
     for (const field of requiredFields) {
