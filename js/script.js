@@ -153,6 +153,38 @@ async function submitBookingForm(event) {
         return;
     }
     
+    // Validate preferred date/time combination (must be at least 1 hour in the future)
+    const preferredDate = formData.get('preferredDate');
+    const preferredTime = formData.get('preferredTime');
+    
+    if (preferredDate && preferredTime) {
+        const selectedDateTime = new Date(`${preferredDate} ${preferredTime}`);
+        const now = new Date();
+        const oneHourFromNow = new Date(now.getTime() + (60 * 60 * 1000));
+        
+        if (selectedDateTime <= oneHourFromNow) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'Please select a date and time that is at least one hour from now. This allows sufficient time for scheduling confirmation.';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Highlight both date and time fields
+            const dateField = document.getElementById('preferredDate');
+            const timeField = document.getElementById('preferredTime');
+            if (dateField) {
+                const dateGroup = dateField.closest('.form-group');
+                if (dateGroup) dateGroup.classList.add('error');
+            }
+            if (timeField) {
+                const timeGroup = timeField.closest('.form-group');
+                if (timeGroup) timeGroup.classList.add('error');
+            }
+            
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Book Free Consultation';
+            return;
+        }
+    }
+    
     
     // Validate Date of Birth using dropdowns (optional field, but if provided must be valid)
     const birthMonth = formData.get('birthMonth');
@@ -480,6 +512,60 @@ function getDateOfBirthFromDropdowns() {
     return '';
 }
 
+// Update time options based on selected date
+function updateTimeOptions() {
+    const preferredDateInput = document.getElementById('preferredDate');
+    const preferredTimeSelect = document.getElementById('preferredTime');
+    
+    if (!preferredDateInput || !preferredTimeSelect) return;
+    
+    const selectedDate = preferredDateInput.value;
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    
+    // All available time options
+    const allTimeOptions = [
+        '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
+        '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
+        '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM'
+    ];
+    
+    // Clear current options except the first placeholder
+    const currentValue = preferredTimeSelect.value;
+    preferredTimeSelect.innerHTML = '<option value="">Select preferred time</option>';
+    
+    // If today is selected, filter out past times (need at least 1 hour from now)
+    if (selectedDate === today) {
+        const oneHourFromNow = new Date(now.getTime() + (60 * 60 * 1000));
+        
+        allTimeOptions.forEach(timeStr => {
+            const testDateTime = new Date(`${selectedDate} ${timeStr}`);
+            
+            // Only add time if it's at least 1 hour from now
+            if (testDateTime > oneHourFromNow) {
+                const option = document.createElement('option');
+                option.value = timeStr;
+                option.textContent = timeStr;
+                if (timeStr === currentValue) {
+                    option.selected = true;
+                }
+                preferredTimeSelect.appendChild(option);
+            }
+        });
+    } else {
+        // For future dates, show all times
+        allTimeOptions.forEach(timeStr => {
+            const option = document.createElement('option');
+            option.value = timeStr;
+            option.textContent = timeStr;
+            if (timeStr === currentValue) {
+                option.selected = true;
+            }
+            preferredTimeSelect.appendChild(option);
+        });
+    }
+}
+
 // Initialize page functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize navigation
@@ -487,6 +573,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize date/time validation
     initializeDateTimeValidation();
+    
+    // Add event listener for date changes to update time options
+    const preferredDateInput = document.getElementById('preferredDate');
+    if (preferredDateInput) {
+        preferredDateInput.addEventListener('change', updateTimeOptions);
+        // Initial call to set up time options for today
+        updateTimeOptions();
+    }
     
     
     // Initialize DOM elements
