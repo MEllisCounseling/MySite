@@ -82,7 +82,12 @@ exports.handler = async (event, context) => {
                 // BATCH 3: Consent fields (checkbox format: true for checked, omit for unchecked)
                 ...(data.consultationConsent === 'Yes' ? { 'Consultation Consent': true } : {}),
                 ...(data.communicationConsent === 'Yes' ? { 'Communication Consent': true } : {}),
-                ...(data.privacyConsent === 'Yes' ? { 'Privacy Consent': true } : {})
+                ...(data.privacyConsent === 'Yes' ? { 'Privacy Consent': true } : {}),
+                
+                // BATCH 4: Additional form fields
+                'Gender': data.gender || 'Not specified',
+                'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
+                'Reason For Visit': data.reasonForVisit || 'Not specified'
             }
         };
         

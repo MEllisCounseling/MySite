@@ -139,7 +139,12 @@ async function submitBookingForm(event) {
         // Consent Information
         consultationConsent: formData.get('consultationConsent') ? 'Yes' : 'No',
         communicationConsent: formData.get('communicationConsent') ? 'Yes' : 'No',
-        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No'
+        privacyConsent: formData.get('privacyConsent') ? 'Yes' : 'No',
+        
+        // BATCH 4: Additional form fields
+        gender: formData.get('gender') || '',
+        appointmentType: formData.get('appointmentType') || '',
+        reasonForVisit: formData.get('reasonForVisit') || ''
     };
     
     try {
