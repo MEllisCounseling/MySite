@@ -148,7 +148,8 @@ async function submitBookingForm(event) {
         
         // BATCH 5: Status and metadata fields (auto-filled, no form fields needed)
         status: 'Pending Confirmation',
-        additionalInfo: formData.get('additionalInfo') || ''
+        additionalInfo: formData.get('additionalInfo') || '',
+        type: 'Free Consultation'
     };
     
     try {
