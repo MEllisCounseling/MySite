@@ -132,6 +132,44 @@ async function submitBookingForm(event) {
         return;
     }
     
+    // Validate Gender selection
+    const genderValue = formData.get('gender');
+    if (!genderValue || genderValue.trim() === '') {
+        formMessage.className = 'form-message error';
+        formMessage.textContent = 'Please select a gender option from the dropdown.';
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Free Consultation';
+        return;
+    }
+    
+    // Validate Date of Birth (optional field, but if provided must be valid)
+    const dateOfBirthValue = formData.get('dateOfBirth');
+    if (dateOfBirthValue && dateOfBirthValue.trim() !== '') {
+        const birthDate = new Date(dateOfBirthValue);
+        const today = new Date();
+        const eighteenYearsAgo = new Date();
+        eighteenYearsAgo.setFullYear(today.getFullYear() - 18);
+        
+        if (birthDate > today) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'Date of Birth cannot be in the future.';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Book Free Consultation';
+            return;
+        }
+        
+        if (birthDate > eighteenYearsAgo) {
+            formMessage.className = 'form-message error';
+            formMessage.textContent = 'You must be at least 18 years old for individual consultation. For clients under 18, please contact us directly at (540) 431-7376 to discuss family therapy options.';
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Book Free Consultation';
+            return;
+        }
+    }
+    
     // Prepare data for submission - ONLY CURRENT FORM FIELDS
     const data = {
         // Personal Information - Required fields
@@ -395,12 +433,18 @@ function initializeNavigation() {
 
 // Initialize date validation
 function initializeDateTimeValidation() {
-    const dateInput = document.getElementById('preferredDate');
+    const today = new Date().toISOString().split('T')[0];
     
-    if (dateInput) {
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
+    // Set minimum date for preferred date to today
+    const preferredDateInput = document.getElementById('preferredDate');
+    if (preferredDateInput) {
+        preferredDateInput.setAttribute('min', today);
+    }
+    
+    // Set maximum date for date of birth to today (no future births)
+    const dateOfBirthInput = document.getElementById('dateOfBirth');
+    if (dateOfBirthInput) {
+        dateOfBirthInput.setAttribute('max', today);
     }
 }
 
