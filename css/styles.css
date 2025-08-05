@@ -997,3 +997,27 @@ input#privacyConsent + *,
         margin-top: 15px !important;
     }
 }
+
+/* Form field error highlighting */
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+    border: 2px solid #f44336 !important;
+    background-color: #ffebee !important;
+    box-shadow: 0 0 5px rgba(244, 67, 54, 0.3) !important;
+}
+
+.form-group.error label {
+    color: #d32f2f !important;
+    font-weight: 600 !important;
+}
+
+/* Date of Birth dropdowns */
+.date-birth-group {
+    display: flex;
+    gap: 10px;
+}
+
+.date-birth-group select {
+    flex: 1;
+}

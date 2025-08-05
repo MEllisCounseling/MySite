@@ -95,19 +95,45 @@ async function submitBookingForm(event) {
         { name: 'email', label: 'Email Address' },
         { name: 'phone', label: 'Phone Number' },
         { name: 'city', label: 'City' },
-        { name: 'state', label: 'State' }
+        { name: 'state', label: 'State' },
+        { name: 'gender', label: 'Gender' },
+        { name: 'reasonForVisit', label: 'Reason For Visit' },
+        { name: 'preferredDate', label: 'Preferred Date' },
+        { name: 'preferredTime', label: 'Preferred Time' }
     ];
     
+    // Clear previous field highlights
+    document.querySelectorAll('.form-group.error').forEach(group => {
+        group.classList.remove('error');
+    });
+    
+    const missingFields = [];
     for (const field of requiredFields) {
         const value = formData.get(field.name);
         if (!value || value.trim() === '') {
-            formMessage.className = 'form-message error';
-            formMessage.textContent = `Please fill in the ${field.label} field.`;
-            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Book Free Consultation';
-            return;
+            missingFields.push(field);
+            // Highlight the missing field
+            const fieldElement = document.getElementById(field.name);
+            if (fieldElement) {
+                const formGroup = fieldElement.closest('.form-group');
+                if (formGroup) {
+                    formGroup.classList.add('error');
+                }
+            }
         }
+    }
+    
+    if (missingFields.length > 0) {
+        formMessage.className = 'form-message error';
+        if (missingFields.length === 1) {
+            formMessage.textContent = `Please fill in the ${missingFields[0].label} field.`;
+        } else {
+            formMessage.textContent = `Please fill in the following required fields: ${missingFields.map(f => f.label).join(', ')}.`;
+        }
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Free Consultation';
+        return;
     }
     
     // Additional validation for optional fields with specific formats
@@ -121,53 +147,24 @@ async function submitBookingForm(event) {
         return;
     }
     
-    // Validate Reason For Visit selection
-    const reasonForVisitValue = formData.get('reasonForVisit');
-    if (!reasonForVisitValue || reasonForVisitValue.trim() === '') {
-        formMessage.className = 'form-message error';
-        formMessage.textContent = 'Please select a main area of interest from the dropdown.';
-        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Book Free Consultation';
-        return;
-    }
     
-    // Validate Gender selection
-    const genderValue = formData.get('gender');
-    if (!genderValue || genderValue.trim() === '') {
-        formMessage.className = 'form-message error';
-        formMessage.textContent = 'Please select a gender option from the dropdown.';
-        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Book Free Consultation';
-        return;
-    }
+    // Validate Date of Birth using dropdowns (optional field, but if provided must be valid)
+    const birthMonth = formData.get('birthMonth');
+    const birthYear = formData.get('birthYear');
     
-    // Validate Date of Birth (optional field, but if provided must be valid)
-    const dateOfBirthValue = formData.get('dateOfBirth');
-    if (dateOfBirthValue && dateOfBirthValue.trim() !== '') {
-        const birthDate = new Date(dateOfBirthValue);
-        const today = new Date();
-        const eighteenYearsAgo = new Date();
-        eighteenYearsAgo.setFullYear(today.getFullYear() - 18);
-        
-        if (birthDate > today) {
+    if ((birthMonth && birthMonth.trim() !== '') || (birthYear && birthYear.trim() !== '')) {
+        // If one is filled, both must be filled
+        if (!birthMonth || !birthYear || birthMonth.trim() === '' || birthYear.trim() === '') {
             formMessage.className = 'form-message error';
-            formMessage.textContent = 'Date of Birth cannot be in the future.';
+            formMessage.textContent = 'Please select both birth month and birth year, or leave both blank.';
             formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             submitBtn.disabled = false;
             submitBtn.textContent = 'Book Free Consultation';
             return;
         }
         
-        if (birthDate > eighteenYearsAgo) {
-            formMessage.className = 'form-message error';
-            formMessage.textContent = 'You must be at least 18 years old for individual consultation. For clients under 18, please contact us directly at (540) 431-7376 to discuss family therapy options.';
-            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Book Free Consultation';
-            return;
-        }
+        // Age validation is built into the year dropdown (only goes up to 18 years ago)
+        // so no additional age validation needed
     }
     
     // Prepare data for submission - ONLY CURRENT FORM FIELDS
@@ -181,7 +178,7 @@ async function submitBookingForm(event) {
         email: formData.get('email'),
         
         // Personal Information - Optional fields  
-        dateOfBirth: formData.get('dateOfBirth') || '',
+        dateOfBirth: getDateOfBirthFromDropdowns(),
         address: formData.get('address') || '',
         zipCode: formData.get('zipCode') || '',
         
@@ -431,7 +428,7 @@ function initializeNavigation() {
     updateActiveNavLink();
 }
 
-// Initialize date validation
+// Initialize date validation and populate birth year dropdown
 function initializeDateTimeValidation() {
     const today = new Date().toISOString().split('T')[0];
     
@@ -441,11 +438,40 @@ function initializeDateTimeValidation() {
         preferredDateInput.setAttribute('min', today);
     }
     
-    // Set maximum date for date of birth to today (no future births)
-    const dateOfBirthInput = document.getElementById('dateOfBirth');
-    if (dateOfBirthInput) {
-        dateOfBirthInput.setAttribute('max', today);
+    // Populate birth year dropdown
+    const birthYearSelect = document.getElementById('birthYear');
+    if (birthYearSelect) {
+        const currentYear = new Date().getFullYear();
+        const eighteenYearDefault = currentYear - 18;
+        
+        // Add years from 100 years ago to 18 years ago
+        for (let year = currentYear - 100; year <= currentYear - 18; year++) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            if (year === eighteenYearDefault) {
+                option.selected = true; // Default to 18 years ago
+            }
+            birthYearSelect.appendChild(option);
+        }
     }
+    
+    // Set default birth month to January
+    const birthMonthSelect = document.getElementById('birthMonth');
+    if (birthMonthSelect) {
+        birthMonthSelect.value = '01'; // Default to January
+    }
+}
+
+// Helper function to get date of birth from dropdowns
+function getDateOfBirthFromDropdowns() {
+    const month = document.getElementById('birthMonth').value;
+    const year = document.getElementById('birthYear').value;
+    
+    if (month && year) {
+        return `${year}-${month}-01`; // Use first day of month
+    }
+    return '';
 }
 
 // Initialize page functionality

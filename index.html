@@ -139,8 +139,27 @@
                     <!-- Optional Fields Section -->
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="dateOfBirth">Date of Birth</label>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" max="">
+                            <label for="birthMonth">Date of Birth</label>
+                            <div class="date-birth-group">
+                                <select id="birthMonth" name="birthMonth">
+                                    <option value="">Month</option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                <select id="birthYear" name="birthYear">
+                                    <option value="">Year</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="zipCode">ZIP Code</label>
@@ -195,12 +214,12 @@
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="preferredDate">Preferred Date (optional)</label>
-                            <input type="date" id="preferredDate" name="preferredDate">
+                            <label for="preferredDate">Preferred Date *</label>
+                            <input type="date" id="preferredDate" name="preferredDate" required>
                         </div>
                         <div class="form-group">
-                            <label for="preferredTime">Preferred Time (optional)</label>
-                            <select id="preferredTime" name="preferredTime">
+                            <label for="preferredTime">Preferred Time *</label>
+                            <select id="preferredTime" name="preferredTime" required>
                                 <option value="">Select preferred time</option>
                                 <option value="9:00 AM">9:00 AM</option>
                                 <option value="9:30 AM">9:30 AM</option>
@@ -515,6 +534,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js?v=21"></script>
+    <script src="js/script.js?v=22"></script>
 </body>
 </html>
