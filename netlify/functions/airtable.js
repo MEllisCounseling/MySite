@@ -91,8 +91,7 @@ exports.handler = async (event, context) => {
                 
                 // BATCH 5: Status and metadata fields
                 'Status': data.status || 'Pending Confirmation',
-                'Additional Information': data.additionalInfo || 'None provided',
-                'Type': data.type || 'Free Consultation'
+                'Additional Information': data.additionalInfo || 'None provided'
             }
         };
         
@@ -120,6 +119,7 @@ exports.handler = async (event, context) => {
 
         console.log('Record to be sent to Airtable:', JSON.stringify(record, null, 2));
         console.log('Number of fields being sent:', Object.keys(record.fields).length);
+        console.log('Field names being sent:', Object.keys(record.fields));
 
         // Make request to Airtable
         const airtableUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableName}`;
