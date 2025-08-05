@@ -70,25 +70,15 @@ async function submitBookingForm(event) {
     // Get form data
     const formData = new FormData(form);
     
-    // Validate required consent checkboxes with specific messaging - MINIMAL FORM VERSION
-    const consentChecks = [
-        { name: 'consultationConsent', label: 'consultation understanding' },
-        { name: 'privacyConsent', label: 'privacy consent' },
-        { name: 'communicationConsent', label: 'communication consent' }
-    ];
+    // Clear previous field highlights
+    document.querySelectorAll('.form-group.error').forEach(group => {
+        group.classList.remove('error');
+    });
     
-    for (const consent of consentChecks) {
-        if (!formData.get(consent.name)) {
-            formMessage.className = 'form-message error';
-            formMessage.textContent = `Please check the ${consent.label} checkbox to continue. All consent agreements are required.`;
-            formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Book Free Consultation';
-            return;
-        }
-    }
+    // Comprehensive validation - collect ALL missing fields
+    const missingFields = [];
     
-    // Validate required fields with better messaging - ADDING FIELDS BACK SLOWLY
+    // Required form fields
     const requiredFields = [
         { name: 'firstName', label: 'First Name' },
         { name: 'lastName', label: 'Last Name' },
@@ -102,18 +92,34 @@ async function submitBookingForm(event) {
         { name: 'preferredTime', label: 'Preferred Time' }
     ];
     
-    // Clear previous field highlights
-    document.querySelectorAll('.form-group.error').forEach(group => {
-        group.classList.remove('error');
-    });
-    
-    const missingFields = [];
+    // Check regular form fields
     for (const field of requiredFields) {
         const value = formData.get(field.name);
         if (!value || value.trim() === '') {
             missingFields.push(field);
             // Highlight the missing field
             const fieldElement = document.getElementById(field.name);
+            if (fieldElement) {
+                const formGroup = fieldElement.closest('.form-group');
+                if (formGroup) {
+                    formGroup.classList.add('error');
+                }
+            }
+        }
+    }
+    
+    // Check required consent checkboxes
+    const consentChecks = [
+        { name: 'consultationConsent', label: 'Consultation Understanding' },
+        { name: 'privacyConsent', label: 'Privacy Consent' },
+        { name: 'communicationConsent', label: 'Communication Consent' }
+    ];
+    
+    for (const consent of consentChecks) {
+        if (!formData.get(consent.name)) {
+            missingFields.push(consent);
+            // Highlight the missing checkbox's form group
+            const fieldElement = document.getElementById(consent.name) || document.getElementById('privacyConsentWorking');
             if (fieldElement) {
                 const formGroup = fieldElement.closest('.form-group');
                 if (formGroup) {

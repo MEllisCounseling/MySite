@@ -1012,6 +1012,15 @@ input#privacyConsent + *,
     font-weight: 600 !important;
 }
 
+/* Checkbox error highlighting */
+.form-group.error .checkbox-label {
+    background-color: #ffebee !important;
+    border: 2px solid #f44336 !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    box-shadow: 0 0 5px rgba(244, 67, 54, 0.3) !important;
+}
+
 /* Date of Birth dropdowns */
 .date-birth-group {
     display: flex;
