@@ -159,7 +159,12 @@ async function submitBookingForm(event) {
         
         // BATCH 5: Status and metadata fields (auto-filled, no form fields needed)
         status: 'Pending Confirmation',
-        additionalInfo: formData.get('additionalInfo') || ''
+        additionalInfo: formData.get('additionalInfo') || '',
+        
+        // BATCH 6: Scheduling and format preferences
+        preferredDate: formData.get('preferredDate') || '',
+        preferredTime: formData.get('preferredTime') || '',
+        sessionFormat: formData.get('sessionFormat') || ''
     };
     
     try {

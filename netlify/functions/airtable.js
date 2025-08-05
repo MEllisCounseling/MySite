@@ -91,7 +91,12 @@ exports.handler = async (event, context) => {
                 
                 // BATCH 5: Status and metadata fields
                 'Status': data.status || 'Pending Confirmation',
-                'Additional Information': data.additionalInfo || 'None provided'
+                'Additional Information': data.additionalInfo || 'None provided',
+                
+                // BATCH 6: Scheduling and format preferences
+                'Preferred Date': data.preferredDate || '',
+                'Preferred Time': data.preferredTime || '',
+                'Session Format': data.sessionFormat || ''
             }
         };
         
