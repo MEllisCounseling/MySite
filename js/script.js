@@ -121,6 +121,17 @@ async function submitBookingForm(event) {
         return;
     }
     
+    // Validate Reason For Visit selection
+    const reasonForVisitValue = formData.get('reasonForVisit');
+    if (!reasonForVisitValue || reasonForVisitValue.trim() === '') {
+        formMessage.className = 'form-message error';
+        formMessage.textContent = 'Please select a main area of interest from the dropdown.';
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Free Consultation';
+        return;
+    }
+    
     // Prepare data for submission - ONLY CURRENT FORM FIELDS
     const data = {
         // Personal Information - Required fields
