@@ -144,7 +144,12 @@ async function submitBookingForm(event) {
         // BATCH 4: Additional form fields
         gender: formData.get('gender') || '',
         appointmentType: formData.get('appointmentType') || '',
-        reasonForVisit: formData.get('reasonForVisit') || ''
+        reasonForVisit: formData.get('reasonForVisit') || '',
+        
+        // BATCH 5: Status and metadata fields (auto-filled, no form fields needed)
+        status: 'Pending Confirmation',
+        additionalInfo: formData.get('additionalInfo') || '',
+        type: 'Free Consultation'
     };
     
     try {

@@ -87,7 +87,12 @@ exports.handler = async (event, context) => {
                 // BATCH 4: Additional form fields
                 'Gender': data.gender || 'Not specified',
                 'Appointment Type': data.appointmentType || 'Free 15-Minute Consultation',
-                'Reason For Visit': data.reasonForVisit || 'Not specified'
+                'Reason For Visit': data.reasonForVisit || 'Not specified',
+                
+                // BATCH 5: Status and metadata fields
+                'Status': data.status || 'Pending Confirmation',
+                'Additional Information': data.additionalInfo || 'None provided',
+                'Type': data.type || 'Free Consultation'
             }
         };
         
