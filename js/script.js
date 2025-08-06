@@ -11,6 +11,8 @@ function showConsultationForm() {
     const modal = consultationModal || document.getElementById('consultationModal');
     if (modal) {
         modal.style.display = 'block';
+        // Restore any saved form data
+        restoreFormData();
     }
 }
 
@@ -256,6 +258,9 @@ async function submitBookingForm(event) {
             formMessage.textContent = '✅ Free consultation request submitted successfully! I will contact you within 24 hours to schedule your 15-minute consultation.';
             formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             form.reset();
+            
+            // Clear saved form data since submission was successful
+            clearSavedFormData();
             
             // Hide modal after 8 seconds to give user time to read message
             setTimeout(() => {
@@ -512,6 +517,168 @@ function getDateOfBirthFromDropdowns() {
     return '';
 }
 
+// Auto-save form data to localStorage
+function saveFormData() {
+    const form = document.getElementById('consultationForm');
+    if (!form) return;
+    
+    const formData = new FormData(form);
+    const savedData = {};
+    
+    // Save all form field values
+    for (const [key, value] of formData.entries()) {
+        savedData[key] = value;
+    }
+    
+    // Also save checkbox states (FormData only includes checked boxes)
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        savedData[checkbox.name] = checkbox.checked;
+    });
+    
+    // Save dropdown selections that might be empty
+    const selects = form.querySelectorAll('select');
+    selects.forEach(select => {
+        if (!savedData[select.name]) {
+            savedData[select.name] = select.value;
+        }
+    });
+    
+    localStorage.setItem('consultationFormData', JSON.stringify(savedData));
+    console.log('Form data auto-saved:', Object.keys(savedData).length, 'fields');
+    
+    // Show save indicator briefly
+    showAutoSaveIndicator();
+}
+
+// Restore form data from localStorage
+function restoreFormData() {
+    const savedData = localStorage.getItem('consultationFormData');
+    if (!savedData) return;
+    
+    try {
+        const data = JSON.parse(savedData);
+        console.log('Restoring form data:', Object.keys(data).length, 'fields');
+        
+        // Restore regular input fields and selects
+        Object.keys(data).forEach(fieldName => {
+            const field = document.getElementById(fieldName) || document.querySelector(`[name="${fieldName}"]`);
+            if (field && data[fieldName] !== undefined && data[fieldName] !== null) {
+                if (field.type === 'checkbox') {
+                    field.checked = data[fieldName];
+                } else {
+                    field.value = data[fieldName];
+                }
+            }
+        });
+        
+        // Update time options based on restored date
+        if (data.preferredDate) {
+            updateTimeOptions();
+        }
+        
+        // Show notification if data was restored
+        if (Object.keys(data).some(key => data[key] && data[key] !== '')) {
+            showDataRestoredNotification();
+        }
+        
+    } catch (error) {
+        console.error('Error restoring form data:', error);
+        // Clear corrupted data
+        localStorage.removeItem('consultationFormData');
+    }
+}
+
+// Clear saved form data
+function clearSavedFormData() {
+    localStorage.removeItem('consultationFormData');
+    console.log('Saved form data cleared');
+}
+
+// Show auto-save indicator
+function showAutoSaveIndicator() {
+    const indicator = document.getElementById('autoSaveIndicator');
+    if (indicator) {
+        indicator.classList.add('show');
+        setTimeout(() => {
+            indicator.classList.remove('show');
+        }, 1500); // Hide after 1.5 seconds
+    }
+}
+
+// Show data restored notification
+function showDataRestoredNotification() {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'data-restored-notification';
+    messageDiv.innerHTML = '🔄 Your previous form data has been restored';
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #17a2b8;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        z-index: 1002;
+        font-weight: 500;
+        font-size: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    // Fade in
+    setTimeout(() => {
+        messageDiv.style.opacity = '1';
+    }, 100);
+    
+    // Remove after 4 seconds
+    setTimeout(() => {
+        messageDiv.style.opacity = '0';
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 300);
+    }, 4000);
+}
+
+// Debounced save function to prevent excessive localStorage writes
+let saveTimeout;
+function debouncedSave() {
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(saveFormData, 500); // Save after 500ms of no activity
+}
+
+// Set up auto-save event listeners
+function setupAutoSave() {
+    const form = document.getElementById('consultationForm');
+    if (!form) return;
+    
+    // Auto-save on input changes (text fields, textareas)
+    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], textarea');
+    inputs.forEach(input => {
+        input.addEventListener('input', debouncedSave);
+        input.addEventListener('blur', saveFormData); // Save immediately when field loses focus
+    });
+    
+    // Auto-save on selection changes (dropdowns, checkboxes)
+    const selects = form.querySelectorAll('select');
+    selects.forEach(select => {
+        select.addEventListener('change', saveFormData); // Save immediately for selections
+    });
+    
+    const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', saveFormData); // Save immediately for checkboxes
+    });
+    
+    console.log('Auto-save enabled for', inputs.length + selects.length + checkboxes.length, 'form fields');
+}
+
 // Update time options based on selected date
 function updateTimeOptions() {
     const preferredDateInput = document.getElementById('preferredDate');
@@ -581,6 +748,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initial call to set up time options for today
         updateTimeOptions();
     }
+    
+    // Set up auto-save event listeners for form data persistence
+    setupAutoSave();
     
     
     // Initialize DOM elements
