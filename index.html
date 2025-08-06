@@ -91,12 +91,10 @@
             <p class="hipaa-notice">🔒 This form is securely encrypted. No insurance information needed for free consultations.</p>
             
             <form id="consultationForm" method="POST" onsubmit="submitBookingForm(event)">
-                <!-- MINIMAL FORM TEST - Most fields commented out -->
-                <!-- Personal Information Section -->
+                <!-- Required Information Section -->
                 <div class="form-section">
-                    <h4>Personal Information</h4>
+                    <h4>Required Information</h4>
                     
-                    <!-- Required Fields First -->
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
@@ -136,7 +134,73 @@
                         </div>
                     </div>
                     
-                    <!-- Optional Fields Section -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="gender">Gender *</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                                <option value="Prefer Not to Say">Prefer Not to Say</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reasonForVisit">What would you like to discuss? *</label>
+                            <select id="reasonForVisit" name="reasonForVisit" required>
+                                <option value="">Select main area of interest</option>
+                                <option value="anxiety">Anxiety</option>
+                                <option value="depression">Depression</option>
+                                <option value="relationship">Relationship Issues</option>
+                                <option value="trauma">Trauma/PTSD</option>
+                                <option value="grief">Grief/Loss</option>
+                                <option value="stress">Stress Management</option>
+                                <option value="life-transition">Life Transitions</option>
+                                <option value="family">Family Issues</option>
+                                <option value="work">Work/Career Issues</option>
+                                <option value="self-esteem">Self-Esteem</option>
+                                <option value="exploring">Just exploring therapy options</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferredDate">Preferred Date *</label>
+                            <input type="date" id="preferredDate" name="preferredDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="preferredTime">Preferred Time *</label>
+                            <select id="preferredTime" name="preferredTime" required>
+                                <option value="">Select preferred time</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="9:30 AM">9:30 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="10:30 AM">10:30 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="11:30 AM">11:30 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="12:30 PM">12:30 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="1:30 PM">1:30 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="2:30 PM">2:30 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="3:30 PM">3:30 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="4:30 PM">4:30 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optional but Helpful Section -->
+                <div class="form-section optional-section">
+                    <h4>Optional but Helpful</h4>
+                    <p class="section-description">These fields help us better prepare for your consultation, but are not required.</p>
+                    
                     <div class="form-row">
                         <div class="form-group">
                             <label for="birthMonth">Date of Birth</label>
@@ -173,78 +237,7 @@
                             <input type="text" id="address" name="address" placeholder="Street Address">
                         </div>
                         <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select id="gender" name="gender">
-                                <option value="">Select gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                                <option value="Prefer Not to Say">Prefer Not to Say</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="reasonForVisit">What would you like to discuss in our consultation?</label>
-                            <select id="reasonForVisit" name="reasonForVisit">
-                                <option value="">Select main area of interest</option>
-                                <option value="anxiety">Anxiety</option>
-                                <option value="depression">Depression</option>
-                                <option value="relationship">Relationship Issues</option>
-                                <option value="trauma">Trauma/PTSD</option>
-                                <option value="grief">Grief/Loss</option>
-                                <option value="stress">Stress Management</option>
-                                <option value="life-transition">Life Transitions</option>
-                                <option value="family">Family Issues</option>
-                                <option value="work">Work/Career Issues</option>
-                                <option value="self-esteem">Self-Esteem</option>
-                                <option value="exploring">Just exploring therapy options</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="additionalInfo">Anything specific you'd like to know about my approach? (optional)</label>
-                            <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Questions about therapy approach, scheduling, insurance, etc..."></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="preferredDate">Preferred Date *</label>
-                            <input type="date" id="preferredDate" name="preferredDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="preferredTime">Preferred Time *</label>
-                            <select id="preferredTime" name="preferredTime" required>
-                                <option value="">Select preferred time</option>
-                                <option value="9:00 AM">9:00 AM</option>
-                                <option value="9:30 AM">9:30 AM</option>
-                                <option value="10:00 AM">10:00 AM</option>
-                                <option value="10:30 AM">10:30 AM</option>
-                                <option value="11:00 AM">11:00 AM</option>
-                                <option value="11:30 AM">11:30 AM</option>
-                                <option value="12:00 PM">12:00 PM</option>
-                                <option value="12:30 PM">12:30 PM</option>
-                                <option value="1:00 PM">1:00 PM</option>
-                                <option value="1:30 PM">1:30 PM</option>
-                                <option value="2:00 PM">2:00 PM</option>
-                                <option value="2:30 PM">2:30 PM</option>
-                                <option value="3:00 PM">3:00 PM</option>
-                                <option value="3:30 PM">3:30 PM</option>
-                                <option value="4:00 PM">4:00 PM</option>
-                                <option value="4:30 PM">4:30 PM</option>
-                                <option value="5:00 PM">5:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sessionFormat">Session Format (optional)</label>
+                            <label for="sessionFormat">Session Format Preference</label>
                             <select id="sessionFormat" name="sessionFormat">
                                 <option value="">Select format preference</option>
                                 <option value="in-person">In-Person</option>
@@ -252,133 +245,15 @@
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <!-- COMMENTED OUT SECTIONS FOR TESTING -->
-                <!--
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="city">City *</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="state">State *</label>
-                            <select id="state" name="state" required>
-                                <option value="">Select State</option>
-                                <option value="VA">Virginia</option>
-                                <option value="MD">Maryland</option>
-                                <option value="WV">West Virginia</option>
-                                <option value="DC">Washington DC</option>
-                            </select>
-                        </div>
-                    </div>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="dateOfBirth">Date of Birth</label>
-                            <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="MM/DD/YYYY">
-                        </div>
-                        <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <select id="gender" name="gender">
-                                <option value="">Prefer not to say</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            <input type="text" id="address" name="address" placeholder="Street Address">
-                        </div>
-                        <div class="form-group">
-                            <label for="zipCode">ZIP Code</label>
-                            <input type="text" id="zipCode" name="zipCode" pattern="[0-9]{5}">
+                            <label for="additionalInfo">Questions about my approach or anything else you'd like to know?</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Questions about therapy approach, scheduling, insurance, etc..."></textarea>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h4>Consultation Preferences</h4>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="preferredDate">Preferred Date *</label>
-                            <input type="date" id="preferredDate" name="preferredDate" required min="">
-                        </div>
-                        <div class="form-group">
-                            <label for="preferredTime">Preferred Time *</label>
-                            <select id="preferredTime" name="preferredTime" required>
-                                <option value="">Select preferred time</option>
-                                <option value="9:00 AM">9:00 AM</option>
-                                <option value="9:30 AM">9:30 AM</option>
-                                <option value="10:00 AM">10:00 AM</option>
-                                <option value="10:30 AM">10:30 AM</option>
-                                <option value="11:00 AM">11:00 AM</option>
-                                <option value="11:30 AM">11:30 AM</option>
-                                <option value="12:00 PM">12:00 PM</option>
-                                <option value="12:30 PM">12:30 PM</option>
-                                <option value="1:00 PM">1:00 PM</option>
-                                <option value="1:30 PM">1:30 PM</option>
-                                <option value="2:00 PM">2:00 PM</option>
-                                <option value="2:30 PM">2:30 PM</option>
-                                <option value="3:00 PM">3:00 PM</option>
-                                <option value="3:30 PM">3:30 PM</option>
-                                <option value="4:00 PM">4:00 PM</option>
-                                <option value="4:30 PM">4:30 PM</option>
-                                <option value="5:00 PM">5:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="sessionFormat">Session Format *</label>
-                        <select id="sessionFormat" name="sessionFormat" required>
-                            <option value="">Select format</option>
-                            <option value="in-person">In-Person</option>
-                            <option value="telehealth">Telehealth (Video)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <h4>What brings you to therapy?</h4>
-                    
-                    <div class="form-group">
-                        <label for="reasonForVisit">What would you like to discuss in our consultation?</label>
-                        <select id="reasonForVisit" name="reasonForVisit">
-                            <option value="">Select main area of interest</option>
-                            <option value="anxiety">Anxiety</option>
-                            <option value="depression">Depression</option>
-                            <option value="relationship">Relationship Issues</option>
-                            <option value="trauma">Trauma/PTSD</option>
-                            <option value="grief">Grief/Loss</option>
-                            <option value="stress">Stress Management</option>
-                            <option value="life-transition">Life Transitions</option>
-                            <option value="family">Family Issues</option>
-                            <option value="work">Work/Career Issues</option>
-                            <option value="self-esteem">Self-Esteem</option>
-                            <option value="exploring">Just exploring therapy options</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="additionalInfo">Anything specific you'd like to know about my approach? (optional)</label>
-                        <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="Questions about therapy approach, scheduling, insurance, etc..."></textarea>
-                    </div>
-                </div>
-                -->
 
                 <!-- Consent Section -->
                 <div class="form-section consent-section">
@@ -534,6 +409,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js?v=24"></script>
+    <script src="js/script.js?v=25"></script>
 </body>
 </html>

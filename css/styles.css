@@ -1030,3 +1030,31 @@ input#privacyConsent + *,
 .date-birth-group select {
     flex: 1;
 }
+
+/* Optional section styling */
+.optional-section {
+    background: #f8f9fa !important;
+    border-left-color: #6c757d !important;
+    border: 2px dashed #dee2e6 !important;
+    margin-top: 30px !important;
+}
+
+.optional-section h4 {
+    color: #6c757d !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.optional-section h4::before {
+    content: "ℹ️";
+    font-size: 16px;
+}
+
+.section-description {
+    color: #6c757d !important;
+    font-style: italic;
+    margin: -10px 0 20px 0 !important;
+    font-size: 14px;
+    line-height: 1.4;
+}
